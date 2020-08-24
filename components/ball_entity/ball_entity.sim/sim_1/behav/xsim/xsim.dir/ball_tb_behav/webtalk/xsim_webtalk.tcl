@@ -1,6 +1,6 @@
 webtalk_init -webtalk_dir C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/
 webtalk_register_client -client project
-webtalk_add_data -client project -key date_generated -value "Mon Aug 24 13:41:32 2020" -context "software_version_and_target_device"
+webtalk_add_data -client project -key date_generated -value "Mon Aug 24 13:55:24 2020" -context "software_version_and_target_device"
 webtalk_add_data -client project -key product_version -value "XSIM v2018.2.2 (64-bit)" -context "software_version_and_target_device"
 webtalk_add_data -client project -key build_version -value "2348494" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_platform -value "WIN64" -context "software_version_and_target_device"
@@ -14,7 +14,7 @@ webtalk_add_data -client project -key target_package -value "not_applicable" -co
 webtalk_add_data -client project -key target_speed -value "not_applicable" -context "software_version_and_target_device"
 webtalk_add_data -client project -key random_id -value "31c4a0f85af251528b9330764643b1ce" -context "software_version_and_target_device"
 webtalk_add_data -client project -key project_id -value "84496bfd39ae483d98a1f3d73074beba" -context "software_version_and_target_device"
-webtalk_add_data -client project -key project_iteration -value "3" -context "software_version_and_target_device"
+webtalk_add_data -client project -key project_iteration -value "5" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_name -value "Microsoft Windows 8 or later , 64-bit" -context "user_environment"
 webtalk_add_data -client project -key os_release -value "major release  (build 9200)" -context "user_environment"
 webtalk_add_data -client project -key cpu_name -value "Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz" -context "user_environment"
@@ -36,7 +36,7 @@ webtalk_add_data -client xsim -key Total_Nets -value "0" -context "xsim\\usage"
 webtalk_add_data -client xsim -key Total_Processes -value "5" -context "xsim\\usage"
 webtalk_add_data -client xsim -key Total_Instances -value "6" -context "xsim\\usage"
 webtalk_add_data -client xsim -key Xilinx_HDL_Libraries_Used -value "secureip " -context "xsim\\usage"
-webtalk_add_data -client xsim -key Compiler_Time -value "0.72_sec" -context "xsim\\usage"
-webtalk_add_data -client xsim -key Compiler_Memory -value "53068_KB" -context "xsim\\usage"
-webtalk_transmit -clientid 3736276300 -regid "" -xml C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.xml -html C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.html -wdm C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.wdm -intro "<H3>XSIM Usage Report</H3><BR>"
+webtalk_add_data -client xsim -key Compiler_Time -value "0.61_sec" -context "xsim\\usage"
+webtalk_add_data -client xsim -key Compiler_Memory -value "53112_KB" -context "xsim\\usage"
+webtalk_transmit -clientid 445806126 -regid "" -xml C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.xml -html C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.html -wdm C:/Users/jksmi/Documents/Code/basys-pong/components/ball_entity/ball_entity.sim/sim_1/behav/xsim/xsim.dir/ball_tb_behav/webtalk/usage_statistics_ext_xsim.wdm -intro "<H3>XSIM Usage Report</H3><BR>"
 webtalk_terminate
