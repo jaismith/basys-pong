@@ -1,16 +1,16 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: ENGS 31 20X
+-- Engineer: Jai K. Smith
 -- 
--- Create Date: 08/24/2020 04:10:50 PM
--- Design Name: 
+-- Create Date: 08/24/2020 01:07:02 PM
+-- Design Name: paddle entity
 -- Module Name: paddle - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- Project Name: 20X Pong
+-- Target Devices: Diligent Basys3 (Artix 7)
+-- Tool Versions: Vivado 2018.2.2
+-- Description: paddle entity controller
 -- 
--- Dependencies: 
+-- Dependencies: n/a
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
@@ -28,13 +28,14 @@ entity paddle is
            en       : in std_logic;
            reset    : in std_logic;
            home     : in std_logic_vector (8 downto 0);
-           v        : in std_logic;
+           v        : in std_logic_vector(3 downto 0);
            y        : out std_logic_vector (8 downto 0));
 end paddle;
 
 architecture Behavioral of paddle is
 
 -- signals
+signal u_v : unsigned(3 downto 0) := (others => '0');
 signal u_y : unsigned(8 downto 0) := (others => '0');
 
 begin
@@ -50,12 +51,14 @@ end process reset_proc;
 
 step_proc: process(clk)
 begin
+    u_v <= unsigned(v);
+
     if rising_edge(clk) then
         if en = '1' then
-            if v = '1' then
-                u_y <= u_y + 1;
-            else
-                u_y <= u_y - 1;
+            if u_v < 4 then
+                u_y <= u_y + (4 - u_v);
+            elsif u_v > 4 then
+                u_y <= u_y - (u_v - 4);
             end if;
         end if;
     end if;
