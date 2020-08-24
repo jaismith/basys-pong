@@ -26,33 +26,36 @@ use UNISIM.VComponents.all;
 
 
 entity vga_controller is
-    port(clk:   in std_logic;
-         rgb:   out std_logic_vector( 11 downto 0 );
-         hsync: out std_logic;
-         vsync: out std_logic);
+    port(clk:              in std_logic;
+         rgb:              out std_logic_vector( 11 downto 0 );
+         hsync, vsync:     out std_logic);
 end vga_controller;
 
 architecture Behavioral of vga_controller is
+
 component vga_sync is
 	port(clk:              in std_logic; --25 Mhz clock
          pixel_x, pixel_y: out  std_logic_vector( 9 downto 0); 
-         hsync:            out std_logic;
-         vsync:            out std_logic);
+         video_on:         out std_logic;
+         hsync, vsync:     out std_logic);
 end component;
 
 component vga_test_pattern is
-	port(row, column			: in  std_logic_vector( 9 downto 0);
-		 color				    : out std_logic_vector(11 downto 0));
+	port( row, column			: in  std_logic_vector( 9 downto 0);
+		  color				    : out std_logic_vector(11 downto 0));
 end component;
 
+
 -- Signals for the clock divider, which divides the master clock down to 25 MHz
-constant CLOCK_DIVIDER_VALUE: integer := 100/4;  
+constant CLOCK_DIVIDER_VALUE: integer := 2;  
 signal rclkdiv: unsigned(22 downto 0) := (others => '0');    -- clock divider counter
 signal rclkdiv_tog: std_logic := '0';                        -- terminal count
 signal rclk: std_logic := '0';
 
 --Interconnecting Signals
 signal x, y: std_logic_vector(9 downto 0) := (others => '0'); 
+signal video_on: std_logic := '1';
+signal color: std_logic_vector(11 downto 0) :=  (others => '0');
 
 begin
 -- Clock buffer for the 25 MHz clock
@@ -60,6 +63,7 @@ begin
 slow_clock_buffer: BUFG
       port map (I => rclkdiv_tog,
                 O => rclk );
+
 clock_divider: process(clk)
 begin
     if rising_edge(clk) then
@@ -70,12 +74,25 @@ begin
             rclkdiv <= rclkdiv + 1;                 -- Counter
         end if;
     end if;
-end process clock_divider;           
+end process clock_divider;
+    
+video_enabler: process(clk)
+begin  
+    if rising_edge(clk) then
+        if video_on = '1' then
+            rgb <= color;
+        else
+            rgb <= "000000000000"; -- set to black if outside active area
+        end if;
+    end if;
+end process video_enabler;
+       
 -- VGA Sync:
 sync: vga_sync port map(
             clk=>rclk, 
             pixel_x => x, 
             pixel_y => y, 
+            video_on=> video_on, 
             hsync=>hsync, 
             vsync=>vsync);
             
@@ -83,6 +100,6 @@ sync: vga_sync port map(
 pattern: vga_test_pattern port map(
             row=> y, 
             column=>x, 
-            color => rgb);
-                
+            color => color);
+                          
 end Behavioral;

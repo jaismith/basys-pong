@@ -24,7 +24,7 @@ use ieee.numeric_std.all;
 entity vga_sync is
     port(   clk:              in std_logic; --25 Mhz clock
             pixel_x, pixel_y: out  std_logic_vector( 9 downto 0);
---            video_on:         out std_logic;
+            video_on:         out std_logic;
             hsync:            out std_logic;
             vsync:            out std_logic);
 end vga_sync;
@@ -43,9 +43,8 @@ constant V_ACTIVE: integer := 480;
 
 --STATE VARIABLES
 signal uh_count, uv_count: unsigned(9 downto 0) := (others => '0');
-signal ux,uy: unsigned(9 downto 0) :=  (others => '0');
 
---signal vblank, hblank: std_logic := '1';
+signal vblank, hblank: std_logic := '1';
 signal h_CE: std_logic:= '0';--indicates end of horizontal counting
 
 begin 
@@ -58,10 +57,9 @@ begin
        
         --inside active pixels
         if  uh_count < (H_ACTIVE) - 1 then
---            hblank <= '0';
-            ux <= ux + 1; -- x pixel count
---        else
---            hblank <= '1';
+            hblank <= '0';
+        else
+            hblank <= '1';
         end if;
         
         --increment
@@ -70,7 +68,6 @@ begin
         --loop count at pixel 799
         if uh_count = (H_FRONT_PORCH + H_SYNC_PULSE + H_BACK_PORCH + H_ACTIVE) - 1 then
             uh_count <= (others => '0');
-            ux <= (others =>'0');
             h_CE <= '1';
          else
             h_CE <= '0';
@@ -94,10 +91,9 @@ begin
          if h_CE='1' then    
              --inside active pixels
              if  uv_count < (V_ACTIVE) - 1 then
---                 vblank <= '0';
-                 uy <= uy + 1; -- x pixel count
---             else
---                 vblank <= '1';
+                 vblank <= '0';
+             else
+                 vblank <= '1';
              end if;
             --increment
             uv_count <= uv_count + 1;
@@ -106,7 +102,6 @@ begin
         --loop count at pixel 524 and 
         if uv_count = (V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH + V_ACTIVE) - 1 then
            uv_count <= (others => '0');
-           uy <= (others =>'0');
         end if;
     end if;
     
@@ -117,18 +112,16 @@ begin
         vsync <= '1';
     end if;  
     
---    --enable video, if appropriate
---    if hblank = '0' AND vblank = '0' then
---        video_on <= '1';
---    else
---        video_on <= '0';
---    end if;
+    --enable video, if appropriate
+    if hblank = '0' AND vblank = '0' then
+        video_on <= '1';
+    else
+        video_on <= '0';
+    end if;
 
 end process v_counter;
 
-
-
-pixel_x <= std_logic_vector(ux);
-pixel_y <= std_logic_vector(uy);
+pixel_x <= std_logic_vector(uh_count);
+pixel_y <= std_logic_vector(uv_count);
 
 end Behavioral;
