@@ -40,21 +40,16 @@ signal u_y : unsigned(8 downto 0) := (others => '0');
 
 begin
 
-reset_proc: process(clk)
-begin
-    if rising_edge(clk) then
-        if reset = '1' then
-            u_y <= unsigned(home);
-        end if;
-    end if;
-end process reset_proc;
-
 step_proc: process(clk)
 begin
     u_v <= unsigned(v);
-
+    
     if rising_edge(clk) then
-        if en = '1' then
+        if reset = '1' then
+            -- home
+            u_y <= unsigned(home);
+        elsif en = '1' then
+            -- update y
             if u_v < 4 then
                 u_y <= u_y + (4 - u_v);
             elsif u_v > 4 then

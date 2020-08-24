@@ -43,7 +43,7 @@ signal home : std_logic_vector(8 downto 0) := (others => '0');
 signal reset : std_logic := '0';
 
 -- outputs
-signal v : std_logic_vector(3 downto 0) := (others => '0');
+signal v : std_logic_vector(3 downto 0) := "0100";
 signal y : std_logic_vector(8 downto 0) := (others => '0');
 
 -- constants

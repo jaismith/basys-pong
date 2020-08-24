@@ -80,7 +80,7 @@ end process clk_proc;
 -- stimulus
 stim_proc: process
 begin
-    wait for 2 * clk_period;
+    wait for 2.5 * clk_period;
     
     reset <= '1';
     wait for 1 * clk_period;
