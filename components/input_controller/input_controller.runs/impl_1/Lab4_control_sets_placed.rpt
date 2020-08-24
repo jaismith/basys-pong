@@ -1,0 +1,81 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3.1 (win64) Build 2489853 Tue Mar 26 04:20:25 MDT 2019
+| Date         : Sun Aug 23 23:58:33 2020
+| Host         : th-wvd-9 running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file Lab4_control_sets_placed.rpt
+| Design       : Lab4
+| Device       : xc7a35t
+--------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |    10 |
+| Unused register locations in slices containing registers |    34 |
++----------------------------------------------------------+-------+
+
+
+2. Histogram
+------------
+
++--------+--------------+
+| Fanout | Control Sets |
++--------+--------------+
+|      1 |            1 |
+|      4 |            1 |
+|      5 |            1 |
+|      8 |            1 |
+|     11 |            1 |
+|     12 |            3 |
+|     13 |            1 |
+|    16+ |            1 |
++--------+--------------+
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |               9 |            4 |
+| No           | No                    | Yes                    |               0 |            0 |
+| No           | Yes                   | No                     |              29 |            9 |
+| Yes          | No                    | No                     |              60 |           15 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |               4 |            1 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++-----------------+-------------------------+---------------------------------+------------------+----------------+
+|   Clock Signal  |      Enable Signal      |         Set/Reset Signal        | Slice Load Count | Bel Load Count |
++-----------------+-------------------------+---------------------------------+------------------+----------------+
+|  mclk_IBUF_BUFG |                         |                                 |                1 |              1 |
+|  sclk           | CONTROLLER_ENT/sel      | CONTROLLER_ENT/count_rst        |                1 |              4 |
+|  mclk_IBUF_BUFG |                         | sclkdiv[4]_i_1_n_0              |                1 |              5 |
+|  sclk           |                         |                                 |                3 |              8 |
+|  sclk           |                         | display/cdcount[10]_i_1_n_0     |                4 |             11 |
+|  sclk           | CONTROLLER_ENT/load_en  |                                 |                2 |             12 |
+|  sclk           | CONTROLLER_ENT/shift_en |                                 |                3 |             12 |
+|  sclk           | FILTER_ENT/tc           |                                 |                3 |             12 |
+|  sclk           |                         | take_sample_counter[12]_i_1_n_0 |                4 |             13 |
+|  sclk           | FILTER_ENT/count_0      |                                 |                7 |             24 |
++-----------------+-------------------------+---------------------------------+------------------+----------------+
+
+

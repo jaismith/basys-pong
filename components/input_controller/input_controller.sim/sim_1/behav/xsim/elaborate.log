@@ -1,0 +1,27 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe -wto b9f1ba68f18242d885b7d7661e5004f7 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot lab4_top_tb_behav xil_defaultlib.lab4_top_tb -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package ieee.math_real
+Compiling package unisim.vcomponents
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling architecture bufg_v of entity unisim.BUFG [bufg_default]
+Compiling architecture behavioral of entity xil_defaultlib.controller [controller_default]
+Compiling architecture behavior of entity xil_defaultlib.interface [interface_default]
+Compiling architecture behavior of entity xil_defaultlib.digital_filter [digital_filter_default]
+Compiling architecture oddr_v of entity unisim.ODDR [\ODDR(ddr_clk_edge="SAME_EDGE")(...]
+Compiling architecture behavioral of entity xil_defaultlib.mux7seg [mux7seg_default]
+Compiling architecture behavioral of entity xil_defaultlib.Lab4 [lab4_default]
+Compiling architecture behavior of entity xil_defaultlib.lab4_top_tb
+Built simulation snapshot lab4_top_tb_behav

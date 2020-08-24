@@ -1,0 +1,11 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../input_controller.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd" \
+"../../../../input_controller.srcs/sources_1/imports/imports/sources_1/imports/new/controller.vhd" \
+"../../../../input_controller.srcs/sources_1/imports/imports/new/filter.vhd" \
+"../../../../input_controller.srcs/sources_1/imports/imports/sources_1/new/interface.vhd" \
+"../../../../input_controller.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd" \
+"../../../../input_controller.srcs/sim_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell_tb.vhd" \
+
+# Do not sort compile order
+nosort

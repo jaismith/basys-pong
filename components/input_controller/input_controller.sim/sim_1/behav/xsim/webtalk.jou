@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3.1 (64-bit)
+# SW Build 2489853 on Tue Mar 26 04:20:25 MDT 2019
+# IP Build 2486929 on Tue Mar 26 06:44:21 MDT 2019
+# Start of session at: Sun Aug 23 23:52:42 2020
+# Process ID: 33032
+# Current directory: O:/ENGS 031/basys-pong/components/input_controller/input_controller.sim/sim_1/behav/xsim
+# Command line: wbtcv.exe -mode batch -source O:/ENGS 031/basys-pong/components/input_controller/input_controller.sim/sim_1/behav/xsim/xsim.dir/lab4_top_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: O:/ENGS 031/basys-pong/components/input_controller/input_controller.sim/sim_1/behav/xsim/webtalk.log
+# Journal file: O:/ENGS 031/basys-pong/components/input_controller/input_controller.sim/sim_1/behav/xsim\webtalk.jou
+#-----------------------------------------------------------
+source O:/ENGS -notrace
