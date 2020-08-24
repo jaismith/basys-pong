@@ -25,6 +25,7 @@ use IEEE.numeric_std.ALL;
 
 entity ball is
     Port ( clk      : in std_logic;
+           en       : in std_logic;
            home_x   : in std_logic_vector(9 downto 0);
            home_y   : in std_logic_vector(8 downto 0);
            reset    : in std_logic;
@@ -42,29 +43,33 @@ signal u_y : unsigned(8 downto 0) := (others => '0');
 
 begin
 
-reset_proc: process(clk, home_x, home_y, reset)
+reset_proc: process(clk)
 begin
-    if rising_edge(clk) and reset = '1' then
-        u_x <= unsigned(home_x);
-        u_y <= unsigned(home_y);
+    if rising_edge(clk) then
+        if reset = '1' then
+            u_x <= unsigned(home_x);
+            u_y <= unsigned(home_y);
+        end if;
     end if;
 end process reset_proc;
 
-step_proc: process(clk, u_x, u_y, v_x, v_y)
+step_proc: process(clk)
 begin
     if rising_edge(clk) then
-        -- update x
-        if v_x = '1' then
-            u_x <= u_x + 1;
-        else
-            u_x <= u_x - 1;
-        end if;
-        
-        -- update y
-        if v_y = '1' then
-            u_y <= u_y + 1;
-        else
-            u_y <= u_y - 1;
+        if en = '1' then
+            -- update x
+            if v_x = '1' then
+                u_x <= u_x + 1;
+            else
+                u_x <= u_x - 1;
+            end if;
+            
+            -- update y
+            if v_y = '1' then
+                u_y <= u_y + 1;
+            else
+                u_y <= u_y - 1;
+            end if;
         end if;
     end if;
 end process step_proc;

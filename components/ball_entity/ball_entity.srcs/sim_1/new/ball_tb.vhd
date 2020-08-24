@@ -39,6 +39,7 @@ architecture Behavioral of ball_tb is
 
 component ball
     port (  clk : in std_logic;
+            en : in std_logic;
             home_x : in std_logic_vector(9 downto 0);
             home_y : in std_logic_vector(8 downto 0);
             reset : in std_logic;
@@ -50,6 +51,7 @@ end component;
 
 -- inputs
 signal clk : std_logic := '0';
+signal en : std_logic := '1';
 signal home_x : std_logic_vector(9 downto 0) := (others => '0');
 signal home_y : std_logic_vector(8 downto 0) := (others => '0');
 signal reset : std_logic := '0';
@@ -67,6 +69,7 @@ begin
 
 uut: ball port map(
     clk => clk,
+    en => en,
     home_x => home_x,
     home_y => home_y,
     reset => reset,
