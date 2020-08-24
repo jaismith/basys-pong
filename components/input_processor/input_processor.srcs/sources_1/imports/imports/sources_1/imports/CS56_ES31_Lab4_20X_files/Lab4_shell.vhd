@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
 -- Company: 			Engs 31 20X
--- Engineer: 			Jai Smith
+-- Engineer: 			Jai K. Smith
 -- 
 -- Create Date:    	 	08/23/2020
 -- Design Name: 		input controller 
 -- Module Name:    		input controller
 -- Project Name: 		20X Pong
 -- Target Devices: 		Digilent Basys3 (Artix 7)
--- Tool versions: 		Vivado 2016.1
--- Description: 		SPI Bus lab
+-- Tool versions: 		Vivado 2018.2.2
+-- Description: 		SPI Bus input controller
 --				
 -- Dependencies: 		mux7seg, multiplexed 7 segment display
 --						pmod_ad1, SPI bus interface to Pmod AD1
@@ -30,16 +30,18 @@ entity Input_Controller is
 port (mclk		: in std_logic;	    -- FPGA board master clock (100 MHz)
 	  -- SPI bus interface to Pmod AD1
       spi_sclk : out std_logic;
-      take_sample_LA : out std_logic;
 	  spi_cs : out std_logic;
       spi_sdata_0 : in std_logic;
       spi_sdata_1 : in std_logic;
-      filter_en: in std_logic;
       
 	  -- multiplexed seven segment display
       seg	: out std_logic_vector(0 to 6);
       dp    : out std_logic;
-      an 	: out std_logic_vector(3 downto 0) );
+      an 	: out std_logic_vector(3 downto 0);
+      
+      -- primary output
+      controller_0 : out std_logic_vector(2 downto 0);
+      controller_1 : out std_logic_vector(2 downto 0) );
 end Input_Controller;
 
 architecture Behavioral of Input_Controller is
@@ -113,12 +115,14 @@ signal load_en: std_logic := '0';
 -- data signals for A0
 signal ad_data_0: std_logic_vector(11 downto 0) := (others => '0');
 signal ad_data_filtered_0: std_logic_vector(11 downto 0);
-signal ad_data_output_0: std_logic_vector(11 downto 0);
 
 -- data signals for A1
 signal ad_data_1: std_logic_vector(11 downto 0) := (others => '0');
 signal ad_data_filtered_1: std_logic_vector(11 downto 0);
-signal ad_data_output_1: std_logic_vector(11 downto 0);
+
+-- scaled output values
+signal out_0: unsigned(11 downto 0);
+signal out_1: unsigned(11 downto 0);
 
 -------------------------------------------------
 begin
@@ -154,21 +158,19 @@ begin
             take_sample_counter <= take_sample_counter + 1;
         end if;
     end if;
-    
-    take_sample_LA <= take_sample_internal;
 end process take_sample_proc;
 
--- generate output
-generate_output: process(ad_data_0, ad_data_filtered_0, ad_data_1, ad_data_filtered_1, filter_en)
+-- scale outputs
+scale_output_proc: process(ad_data_filtered_0, ad_data_filtered_1, out_0, out_1)
 begin
-    if filter_en = '1' then
-        ad_data_output_0 <= ad_data_filtered_0;
-        ad_data_output_1 <= ad_data_filtered_1;
-    else
-        ad_data_output_0 <= ad_data_0;
-        ad_data_output_1 <= ad_data_1;
-    end if;
-end process generate_output;
+    -- set internal output signals
+    out_0 <= unsigned(ad_data_filtered_0) / 455;
+    out_1 <= unsigned(ad_data_filtered_1) / 455;
+
+    -- map final controller outputs
+    controller_0 <= std_logic_vector(out_0(2 downto 0));
+    controller_1 <= std_logic_vector(out_1(2 downto 0));
+end process scale_output_proc;
 
 -- controller
 CONTROLLER_ENT: controller port map (
@@ -225,13 +227,12 @@ port map (
 display: mux7seg port map( 
     clk => sclk,				-- runs on the 1 MHz clock
     y3 => "0000", 		        
-    y2 => ad_data_output_0(11 downto 8), -- A/D converter output  	
-    y1 => ad_data_output_0(7 downto 4), 		
-    y0 => ad_data_output_0(3 downto 0),		
+    y2 => std_logic_vector(out_1(3 downto 0)), -- A/D converter output  
+    y1 => "0000",
+    y0 => std_logic_vector(out_0(3 downto 0)),		
     dp_set => "0000",           -- decimal points off
     seg => seg,
     dp => dp,
     an => an );	
 
-		
 end Behavioral;

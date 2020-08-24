@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1598233043">
+<GenRun Id="impl_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1598243068">
   <File Type="BITSTR-BMM" Name="Input_Controller_bd.bmm"/>
   <File Type="OPT-METHODOLOGY-DRC" Name="Input_Controller_methodology_drc_opted.rpt"/>
   <File Type="INIT-TIMING" Name="Input_Controller_timing_summary_init.rpt"/>

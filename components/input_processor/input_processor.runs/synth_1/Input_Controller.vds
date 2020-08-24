@@ -2,8 +2,8 @@
 # Vivado v2018.2.2 (64-bit)
 # SW Build 2348494 on Mon Oct  1 18:25:44 MDT 2018
 # IP Build 2318053 on Mon Oct  1 21:44:26 MDT 2018
-# Start of session at: Sun Aug 23 21:37:26 2020
-# Process ID: 8848
+# Start of session at: Mon Aug 24 00:24:31 2020
+# Process ID: 2668
 # Current directory: C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.runs/synth_1
 # Command line: vivado.exe -log Input_Controller.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Input_Controller.tcl
 # Log file: C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.runs/synth_1/Input_Controller.vds
@@ -15,39 +15,41 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 15200 
+INFO: Helper process launched with PID 10168 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 381.590 ; gain = 97.566
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 381.559 ; gain = 97.609
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'Input_Controller' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:45]
-INFO: [Synth 8-113] binding component instance 'Slow_clock_buffer' to cell 'BUFG' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:127]
-INFO: [Synth 8-3491] module 'controller' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/new/controller.vhd:26' bound to instance 'CONTROLLER_ENT' of component 'controller' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:174]
+INFO: [Synth 8-638] synthesizing module 'Input_Controller' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:47]
+INFO: [Synth 8-113] binding component instance 'Slow_clock_buffer' to cell 'BUFG' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:131]
+INFO: [Synth 8-3491] module 'controller' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/new/controller.vhd:26' bound to instance 'CONTROLLER_ENT' of component 'controller' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:176]
 INFO: [Synth 8-638] synthesizing module 'controller' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/new/controller.vhd:35]
 INFO: [Synth 8-256] done synthesizing module 'controller' (1#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/new/controller.vhd:35]
-INFO: [Synth 8-3491] module 'interface' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:24' bound to instance 'INTERFACE_ENT_0' of component 'interface' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:182]
+INFO: [Synth 8-3491] module 'interface' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:24' bound to instance 'INTERFACE_ENT_0' of component 'interface' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:184]
 INFO: [Synth 8-638] synthesizing module 'interface' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:32]
 INFO: [Synth 8-256] done synthesizing module 'interface' (2#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:32]
-INFO: [Synth 8-3491] module 'interface' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:24' bound to instance 'INTERFACE_ENT_1' of component 'interface' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:189]
-INFO: [Synth 8-3491] module 'digital_filter' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:25' bound to instance 'FILTER_ENT_0' of component 'digital_filter' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:197]
+INFO: [Synth 8-3491] module 'interface' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:24' bound to instance 'INTERFACE_ENT_1' of component 'interface' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:191]
+INFO: [Synth 8-3491] module 'digital_filter' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:25' bound to instance 'FILTER_ENT_0' of component 'digital_filter' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:199]
 INFO: [Synth 8-638] synthesizing module 'digital_filter' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:32]
 INFO: [Synth 8-256] done synthesizing module 'digital_filter' (3#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:32]
-INFO: [Synth 8-3491] module 'digital_filter' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:25' bound to instance 'FILTER_ENT_1' of component 'digital_filter' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:203]
+INFO: [Synth 8-3491] module 'digital_filter' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:25' bound to instance 'FILTER_ENT_1' of component 'digital_filter' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:205]
 	Parameter DDR_CLK_EDGE bound to: SAME_EDGE - type: string 
 	Parameter INIT bound to: 1'b0 
 	Parameter IS_C_INVERTED bound to: 1'b0 
 	Parameter IS_D1_INVERTED bound to: 1'b0 
 	Parameter IS_D2_INVERTED bound to: 1'b0 
 	Parameter SRTYPE bound to: SYNC - type: string 
-INFO: [Synth 8-113] binding component instance 'ODDR_inst' to cell 'ODDR' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:209]
-INFO: [Synth 8-3491] module 'mux7seg' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:25' bound to instance 'display' of component 'mux7seg' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:225]
+INFO: [Synth 8-113] binding component instance 'ODDR_inst' to cell 'ODDR' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:211]
+INFO: [Synth 8-3491] module 'mux7seg' declared at 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:25' bound to instance 'display' of component 'mux7seg' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:227]
 INFO: [Synth 8-638] synthesizing module 'mux7seg' [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:34]
 INFO: [Synth 8-226] default block is never used [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:70]
 INFO: [Synth 8-226] default block is never used [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:84]
 INFO: [Synth 8-226] default block is never used [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:94]
 INFO: [Synth 8-256] done synthesizing module 'mux7seg' (4#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/mux7seg.vhd:34]
-INFO: [Synth 8-256] done synthesizing module 'Input_Controller' (5#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:45]
+WARNING: [Synth 8-3936] Found unconnected internal register 'out_0_reg' and it is trimmed from '12' to '4' bits. [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:167]
+WARNING: [Synth 8-3936] Found unconnected internal register 'out_1_reg' and it is trimmed from '12' to '4' bits. [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:168]
+INFO: [Synth 8-256] done synthesizing module 'Input_Controller' (5#1) [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/imports/CS56_ES31_Lab4_20X_files/Lab4_shell.vhd:47]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 436.844 ; gain = 152.820
+Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 436.820 ; gain = 152.871
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -60,10 +62,10 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 436.844 ; gain = 152.820
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 436.820 ; gain = 152.871
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 436.844 ; gain = 152.820
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 436.820 ; gain = 152.871
 ---------------------------------------------------------------------------------
 INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -81,22 +83,22 @@ Completed Processing XDC Constraints
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 768.160 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 766.859 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished Constraint Validation : Time (s): cpu = 00:00:18 ; elapsed = 00:00:22 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:18 ; elapsed = 00:00:22 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:18 ; elapsed = 00:00:22 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'curr_state_reg' in module 'controller'
 INFO: [Synth 8-5544] ROM "count_tc" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
@@ -112,7 +114,7 @@ INFO: [Synth 8-5546] ROM "take_sample_internal" won't be mapped to RAM because i
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'curr_state_reg' using encoding 'one-hot' in module 'controller'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:15 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:19 ; elapsed = 00:00:22 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -142,7 +144,6 @@ Detailed RTL Component Info :
 	                1 Bit    Registers := 3     
 +---Muxes : 
 	   2 Input     13 Bit        Muxes := 1     
-	   2 Input     12 Bit        Muxes := 1     
 	   2 Input      6 Bit        Muxes := 2     
 	   2 Input      5 Bit        Muxes := 1     
 	   4 Input      4 Bit        Muxes := 2     
@@ -167,7 +168,6 @@ Detailed RTL Component Info :
 	                1 Bit    Registers := 2     
 +---Muxes : 
 	   2 Input     13 Bit        Muxes := 1     
-	   2 Input     12 Bit        Muxes := 1     
 	   2 Input      5 Bit        Muxes := 1     
 	   2 Input      1 Bit        Muxes := 2     
 Module controller 
@@ -221,20 +221,10 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
-WARNING: [Synth 8-6014] Unused sequential element INTERFACE_ENT_1/ser_data_reg_reg was removed.  [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:43]
-WARNING: [Synth 8-6014] Unused sequential element INTERFACE_ENT_1/ad_data_reg was removed.  [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd:53]
-WARNING: [Synth 8-6014] Unused sequential element FILTER_ENT_1/y_reg was removed.  [C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.srcs/sources_1/imports/imports/new/filter.vhd:66]
 INFO: [Synth 8-5546] ROM "take_sample_internal" won't be mapped to RAM because it is too sparse
 WARNING: [Synth 8-3917] design Input_Controller has port an[3] driven by constant 1
-WARNING: [Synth 8-3331] design Input_Controller has unconnected port spi_sdata_1
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[5]) is unused and will be removed from module Input_Controller.
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[4]) is unused and will be removed from module Input_Controller.
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[3]) is unused and will be removed from module Input_Controller.
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[2]) is unused and will be removed from module Input_Controller.
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[1]) is unused and will be removed from module Input_Controller.
-WARNING: [Synth 8-3332] Sequential element (FILTER_ENT_1/count_reg[0]) is unused and will be removed from module Input_Controller.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:25 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -246,13 +236,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:26 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:34 ; elapsed = 00:00:40 . Memory (MB): peak = 766.859 ; gain = 482.910
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:26 . Memory (MB): peak = 768.160 ; gain = 484.137
+Finished Timing Optimization : Time (s): cpu = 00:00:35 ; elapsed = 00:00:40 . Memory (MB): peak = 771.617 ; gain = 487.668
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -264,7 +254,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:21 ; elapsed = 00:00:26 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Technology Mapping : Time (s): cpu = 00:00:35 ; elapsed = 00:00:40 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -288,7 +278,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished IO Insertion : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -301,7 +291,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -313,25 +303,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -348,37 +338,39 @@ Report Cell Usage:
 |      |Cell   |Count |
 +------+-------+------+
 |1     |BUFG   |     2|
-|2     |CARRY4 |     8|
-|3     |LUT1   |     5|
-|4     |LUT2   |    30|
-|5     |LUT3   |    19|
-|6     |LUT4   |    13|
-|7     |LUT5   |    17|
-|8     |LUT6   |    14|
+|2     |CARRY4 |    33|
+|3     |LUT1   |     6|
+|4     |LUT2   |    99|
+|5     |LUT3   |    54|
+|6     |LUT4   |    44|
+|7     |LUT5   |    11|
+|8     |LUT6   |    18|
 |9     |ODDR   |     1|
-|10    |FDRE   |   101|
+|10    |FDRE   |   161|
 |11    |IBUF   |     3|
-|12    |OBUF   |    15|
+|12    |OBUF   |    20|
 +------+-------+------+
 
 Report Instance Areas: 
-+------+------------------+---------------+------+
-|      |Instance          |Module         |Cells |
-+------+------------------+---------------+------+
-|1     |top               |               |   228|
-|2     |  CONTROLLER_ENT  |controller     |    17|
-|3     |  FILTER_ENT_0    |digital_filter |    52|
-|4     |  INTERFACE_ENT_0 |interface      |    51|
-|5     |  display         |mux7seg        |    53|
-+------+------------------+---------------+------+
++------+------------------+-----------------+------+
+|      |Instance          |Module           |Cells |
++------+------------------+-----------------+------+
+|1     |top               |                 |   452|
+|2     |  CONTROLLER_ENT  |controller       |    17|
+|3     |  FILTER_ENT_0    |digital_filter   |   106|
+|4     |  FILTER_ENT_1    |digital_filter_0 |   116|
+|5     |  INTERFACE_ENT_0 |interface        |    51|
+|6     |  INTERFACE_ENT_1 |interface_1      |    51|
+|7     |  display         |mux7seg          |    33|
++------+------------------+-----------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:22 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 11 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:14 ; elapsed = 00:00:19 . Memory (MB): peak = 778.531 ; gain = 163.191
-Synthesis Optimization Complete : Time (s): cpu = 00:00:23 ; elapsed = 00:00:27 . Memory (MB): peak = 778.531 ; gain = 494.508
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:21 ; elapsed = 00:00:31 . Memory (MB): peak = 784.090 ; gain = 170.102
+Synthesis Optimization Complete : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 784.090 ; gain = 500.141
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 12 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 37 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
@@ -386,11 +378,11 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-42 Infos, 11 Warnings, 0 Critical Warnings and 0 Errors encountered.
+42 Infos, 3 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:24 ; elapsed = 00:00:29 . Memory (MB): peak = 778.531 ; gain = 507.141
+synth_design: Time (s): cpu = 00:00:38 ; elapsed = 00:00:44 . Memory (MB): peak = 784.402 ; gain = 512.199
 WARNING: [Constraints 18-5210] No constraint will be written out.
 INFO: [Common 17-1381] The checkpoint 'C:/Users/jksmi/Documents/Code/basys-pong/components/input_processor/input_processor.runs/synth_1/Input_Controller.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file Input_Controller_utilization_synth.rpt -pb Input_Controller_utilization_synth.pb
-report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.037 . Memory (MB): peak = 778.531 ; gain = 0.000
-INFO: [Common 17-206] Exiting Vivado at Sun Aug 23 21:38:03 2020...
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.041 . Memory (MB): peak = 784.402 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Mon Aug 24 00:25:23 2020...
