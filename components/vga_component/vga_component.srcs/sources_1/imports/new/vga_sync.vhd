@@ -36,9 +36,9 @@ constant H_SYNC_PULSE: integer := 96;
 constant H_BACK_PORCH: integer := 48;
 constant H_ACTIVE: integer := 640;
 
-constant V_FRONT_PORCH: integer := 11;
+constant V_FRONT_PORCH: integer := 10;
 constant V_SYNC_PULSE: integer := 2;
-constant V_BACK_PORCH: integer := 31;
+constant V_BACK_PORCH: integer := 29;
 constant V_ACTIVE: integer := 480;
 
 --STATE VARIABLES
@@ -75,7 +75,7 @@ begin
      end if;
      
     --inside sync area check
-    if  uh_count > (H_FRONT_PORCH + H_ACTIVE) - 2 AND uh_count < (H_FRONT_PORCH + H_ACTIVE + H_SYNC_PULSE) - 1  then
+    if  uh_count > (H_FRONT_PORCH + H_ACTIVE) - 2 AND uh_count <= (H_FRONT_PORCH + H_ACTIVE + H_SYNC_PULSE) - 1  then
         hsync <= '0';
     else 
         hsync <= '1';
@@ -97,12 +97,13 @@ begin
              end if;
             --increment
             uv_count <= uv_count + 1;
+              
+            --loop count at pixel 520
+            if uv_count = (V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH + V_ACTIVE) - 1 then
+             uv_count <= (others => '0');
+            end if;
          end if;
-         
-        --loop count at pixel 524 and 
-        if uv_count = (V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH + V_ACTIVE) - 1 then
-           uv_count <= (others => '0');
-        end if;
+       
     end if;
     
     --inside sync area check
