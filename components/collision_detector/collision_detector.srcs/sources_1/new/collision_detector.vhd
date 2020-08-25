@@ -69,14 +69,15 @@ begin
 check_col: process(clk)
 begin 
     if rising_edge(clk) then
+    
         -- DEFAULT COLLISION VALUES
-          p1_collision     <= '0';
-          p2_collision     <= '0';
-          ball_collision   <= '0';
-          top_collision    <= '0';
-          bottom_collision <= '0';
-          right_collision  <= '0';
-          left_collision   <= '0';
+        p1_collision     <= '0';
+        p2_collision     <= '0';
+        ball_collision   <= '0';
+        top_collision    <= '0';
+        bottom_collision <= '0';
+        right_collision  <= '0';
+        left_collision   <= '0';
            
         -- BORDER COLLISIONS
         
@@ -84,44 +85,54 @@ begin
         if b_x = "0000000000" then
             left_collision <= '1';
             ball_collision <= '1';
-        elsif b_y = "000000000" then
+        end if;
+        if b_y = "000000000" then
             top_collision <= '1';
             ball_collision <= '1';
-        elsif unsigned(b_x) + unsigned(b_diam) = X_ACTIVE - 1 then
+        end if;
+        if unsigned(b_x) + unsigned(b_diam) = X_ACTIVE - 1 then
             right_collision <= '1';
             ball_collision <= '1';
-        elsif unsigned(b_y) + unsigned(b_diam) = Y_ACTIVE - 1 then
+        end if;
+        if unsigned(b_y) + unsigned(b_diam) = Y_ACTIVE - 1 then
             bottom_collision <= '1';
             ball_collision <= '1';
-            
+        end if;
+        
         -- paddle 1 collisions
-         elsif p1_y = "000000000" then
+        if p1_y = "000000000" then
             top_collision <= '1';
             p1_collision <= '1';
-         elsif unsigned(p1_y) + unsigned(p_height) = Y_ACTIVE - 1 then
+        end if;
+        if unsigned(p1_y) + unsigned(p_height) = Y_ACTIVE - 1 then
             bottom_collision <= '1';
             p1_collision <= '1';
-            
-         -- paddle 2 collisions
-         elsif p2_y = "000000000" then
-             top_collision <= '1';
-             p1_collision <= '1';
-         elsif unsigned(p2_y) + unsigned(p_height) = Y_ACTIVE - 1 then
-             bottom_collision <= '1';
-             p1_collision <= '1';
-             
+        end if;   
+        
+        -- paddle 2 collisions
+        if p2_y = "000000000" then
+            top_collision <= '1';
+            p1_collision <= '1';
+        end if;
+        if unsigned(p2_y) + unsigned(p_height) = Y_ACTIVE - 1 then
+            bottom_collision <= '1';
+            p1_collision <= '1';
+        end if; 
+           
         -- object collsions
-        elsif unsigned(b_x) = unsigned(p1_x) + unsigned(p_width) + 1 then
+        if unsigned(b_x) = unsigned(p1_x) + unsigned(p_width) + 1 then
             if unsigned(b_y) <=  unsigned(p1_x) + unsigned(p_height) and unsigned(b_y) >=  unsigned(p1_x) - unsigned(p_height) then
                 ball_collision <= '1';
                 p1_collision <= '1';
             end if;
-         elsif unsigned(b_x) + unsigned(b_diam) = unsigned(p2_x) - unsigned(p_width) - 1 then
+        end if;
+        
+        if unsigned(b_x) + unsigned(b_diam) = unsigned(p2_x) - unsigned(p_width) - 1 then
             if unsigned(b_y) <=  unsigned(p1_x) + unsigned(p_height) and unsigned(b_y) >=  unsigned(p1_x) - unsigned(p_height) then
                 ball_collision <= '1';
                 p1_collision <= '1';
             end if;
-        end if;  
+        end if;
     end if;
 end process check_col;
 
