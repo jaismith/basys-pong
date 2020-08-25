@@ -102,6 +102,28 @@ component vga_test_pattern is
 end component;
 
 
+component collision_detector is
+    Port (  clk             : in std_logic;
+            check_x         : in std_logic_vector(9 downto 0);
+            check_y         : in std_logic_vector(8 downto 0);
+            p_width         : in std_logic_vector(1 downto 0);
+            p_height        : in std_logic_vector(3 downto 0);
+            p1_x            : in std_logic_vector(9 downto 0);
+            p1_y            : in std_logic_vector(8 downto 0);
+            p2_x            : in std_logic_vector(9 downto 0);
+            p2_y            : in std_logic_vector(8 downto 0);
+            b_diam          : in std_logic_vector(1 downto 0);
+            b_x             : in std_logic_vector(9 downto 0);
+            b_y             : in std_logic_vector(8 downto 0);
+            p1_collision    : out std_logic;
+            p2_collision    : out std_logic;
+            ball_collision  : out std_logic;
+            top_collision   : out std_logic;
+            bottom_collision : out std_logic;
+            right_collision : out std_logic;
+            left_collision  : out std_logic );
+end component;
+
 -- SIGNALS
 
 -- controller
@@ -125,18 +147,29 @@ signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
 signal vga_y : std_logic_vector(8 downto 0) := (others => '0');
 signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
 
+-- collision detection signals
+signal check_x : std_logic_vector(9 downto 0) := (others => '0');
+signal check_y : std_logic_vector(8 downto 0) := (others => '0');
+signal paddle_0_collision : std_logic := '0';
+signal paddle_1_collision : std_logic := '0';
+signal ball_collision : std_logic := '0';
+signal top_collision : std_logic := '0';
+signal bottom_collision : std_logic := '0';
+signal right_collision : std_logic := '0';
+signal left_collision : std_logic := '0';
+
 
 -- CONSTANTS
 
 -- graphics
-constant BALL_DIAM : integer := 3;
+constant BALL_DIAM : std_logic_vector(1 downto 0) := "11";
 constant BALL_HOME_X : std_logic_vector(9 downto 0) := (others => '0');
 constant BALL_HOME_Y : std_logic_vector(8 downto 0) := (others => '0');
-constant PADDLE_HEIGHT : integer := 15;
-constant PADDLE_WIDTH : integer := 3;
+constant PADDLE_HEIGHT : std_logic_vector(3 downto 0) := "1111";
+constant PADDLE_WIDTH : std_logic_vector(1 downto 0) := "11";
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
-constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000";
-constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000";
+constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
+constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 
 -- internals
 constant STEP_DIV : integer := 10000000; -- 10 Hz step
@@ -221,6 +254,28 @@ VGA_TEST_ENT: vga_test_pattern port map (
     row => vga_y,
     column => vga_x,
     color => vga_color );
+
+-- collision detector
+COLLISION_DETECTOR_ENT: collision_detector port map (
+    clk => mclk,
+    check_x => check_x,
+    check_y => check_y,
+    p_width => PADDLE_WIDTH,
+    p_height => PADDLE_HEIGHT,
+    p1_x => PADDLE_0_X,
+    p1_y => paddle_0_y,
+    p2_x => PADDLE_1_X,
+    p2_y => paddle_1_y,
+    b_diam => BALL_DIAM,
+    b_x => ball_x,
+    b_y => ball_y,
+    p1_collision => paddle_0_collision,
+    p2_collision => paddle_1_collision,
+    ball_collision => ball_collision,
+    top_collision => top_collision,
+    bottom_collision => bottom_collision,
+    right_collision => right_collision,
+    left_collision => left_collision );
 
 
 end Behavioral;
