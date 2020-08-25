@@ -10,7 +10,7 @@
 -- Tool Versions: Vivado 2018.2.2
 -- Description: game controller
 -- 
--- Dependencies: input_controller, ball, paddle
+-- Dependencies: input_controller, ball, paddle, vga_controller
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
@@ -80,6 +80,15 @@ component paddle is
             home            : in std_logic_vector(8 downto 0);
             v               : in std_logic_vector(3 downto 0);
             y               : out std_logic_vector(8 downto 0) );
+end component;
+
+component vga_controller is
+    Port (  clk             : in std_logic;
+            rgb             : out std_logic_vector(11 downto 0);
+            hsync, vsync    : out std_logic;
+            x               : out std_logic_vector(9 downto 0);
+            y               : out std_logic_vector(8 downto 0);
+            color           : out std_logic_vector(11 downto 0) );
 end component;
 
 -- TODO: vga out

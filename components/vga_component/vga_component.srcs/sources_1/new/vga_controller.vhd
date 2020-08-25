@@ -28,9 +28,12 @@ use UNISIM.VComponents.all;
 -- ENTITY DECLARATION
 
 entity vga_controller is
-    port(clk:              in std_logic;
-         rgb:              out std_logic_vector( 11 downto 0 );
-         hsync, vsync:     out std_logic);
+    port(clk            : in std_logic;
+         rgb            : out std_logic_vector( 11 downto 0 );
+         hsync, vsync   : out std_logic;
+         x              : out std_logic_vector(9 downto 0);
+         y              : out std_logic_vector(8 downto 0);
+         color          : in std_logic_vector(11 downto 0) );
 end vga_controller;
 
 architecture Behavioral of vga_controller is
@@ -60,9 +63,8 @@ signal rclkdiv_tog: std_logic := '0';                        -- terminal count
 signal rclk: std_logic := '0';
 
 --Interconnecting Signals
-signal x, y: std_logic_vector(9 downto 0) := (others => '0'); 
 signal video_on: std_logic := '1';
-signal color: std_logic_vector(11 downto 0) :=  (others => '0');
+
 
 begin
 
@@ -86,7 +88,7 @@ begin
         end if;
     end if;
 end process clock_divider;
-    
+
 video_enabler: process(clk)
 begin  
     if rising_edge(clk) then
@@ -109,11 +111,5 @@ sync: vga_sync port map(
             video_on=> video_on, 
             hsync=>hsync, 
             vsync=>vsync);
-            
--- VGA Test Pattern
-pattern: vga_test_pattern port map(
-            row=> y, 
-            column=>x, 
-            color => color);
-                          
+
 end Behavioral;

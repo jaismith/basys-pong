@@ -21,16 +21,23 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+
+-- ENTITY DECLARATION
+
 entity vga_sync is
-    port(   clk:              in std_logic; --25 Mhz clock
-            pixel_x, pixel_y: out  std_logic_vector( 9 downto 0);
-            video_on:         out std_logic;
-            hsync:            out std_logic;
-            vsync:            out std_logic);
+    port(   clk             : in std_logic; --25 Mhz clock
+            pixel_x         : out std_logic_vector(9 downto 0);
+            pixel_y         : out std_logic_vector(8 downto 0);
+            video_on        : out std_logic;
+            hsync           : out std_logic;
+            vsync           : out std_logic);
 end vga_sync;
 
 architecture Behavioral of vga_sync is
+
+
 --CONSTANTS
+
 constant H_FRONT_PORCH: integer := 16;
 constant H_SYNC_PULSE: integer := 96;
 constant H_BACK_PORCH: integer := 48;
@@ -41,13 +48,19 @@ constant V_SYNC_PULSE: integer := 2;
 constant V_BACK_PORCH: integer := 29;
 constant V_ACTIVE: integer := 480;
 
+
 --STATE VARIABLES
+
 signal uh_count, uv_count: unsigned(9 downto 0) := (others => '0');
 
 signal vblank, hblank: std_logic := '1';
-signal h_CE: std_logic:= '0';--indicates end of horizontal counting
+signal h_CE: std_logic:= '0'; --indicates end of horizontal counting
 
-begin 
+
+begin
+
+
+-- PROCESSES
 
 --horizontal counter   
 h_counter: process(clk, h_CE, uh_count)
@@ -123,6 +136,6 @@ begin
 end process v_counter;
 
 pixel_x <= std_logic_vector(uh_count);
-pixel_y <= std_logic_vector(uv_count);
+pixel_y <= std_logic_vector(uv_count(8 downto 0));
 
 end Behavioral;
