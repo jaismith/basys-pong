@@ -18,6 +18,7 @@
 -- 
 ----------------------------------------------------------------------------------
 
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -28,12 +29,12 @@ use UNISIM.VComponents.all;
 -- ENTITY DECLARATION
 
 entity vga_controller is
-    port(clk            : in std_logic;
-         rgb            : out std_logic_vector( 11 downto 0 );
-         hsync, vsync   : out std_logic;
-         x              : out std_logic_vector(9 downto 0);
-         y              : out std_logic_vector(8 downto 0);
-         color          : in std_logic_vector(11 downto 0) );
+    port(   mclk           : in std_logic;
+            rgb            : out std_logic_vector( 11 downto 0 );
+            hsync, vsync   : out std_logic;
+            x              : out std_logic_vector(9 downto 0);
+            y              : out std_logic_vector(8 downto 0);
+            color          : in std_logic_vector(11 downto 0) );
 end vga_controller;
 
 architecture Behavioral of vga_controller is
@@ -77,9 +78,9 @@ slow_clock_buffer: BUFG
       port map (I => rclkdiv_tog,
                 O => rclk );
 
-clock_divider: process(clk)
+clock_divider: process(mclk)
 begin
-    if rising_edge(clk) then
+    if rising_edge(mclk) then
            if rclkdiv = CLOCK_DIVIDER_VALUE-1 then
                rclkdiv_tog <= NOT(rclkdiv_tog);        -- T flip flop
             rclkdiv <= (others => '0');
@@ -89,9 +90,9 @@ begin
     end if;
 end process clock_divider;
 
-video_enabler: process(clk)
+video_enabler: process(mclk)
 begin  
-    if rising_edge(clk) then
+    if rising_edge(mclk) then
         if video_on = '1' then
             rgb <= color;
         else
@@ -105,11 +106,11 @@ end process video_enabler;
 
 -- VGA Sync:
 sync: vga_sync port map(
-            clk=>rclk, 
+            clk => rclk, 
             pixel_x => x, 
             pixel_y => y, 
-            video_on=> video_on, 
-            hsync=>hsync, 
-            vsync=>vsync);
+            video_on => video_on, 
+            hsync => hsync, 
+            vsync => vsync);
 
 end Behavioral;

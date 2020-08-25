@@ -10,7 +10,7 @@
 -- Tool Versions: Vivado 2018.2.2
 -- Description: game controller
 -- 
--- Dependencies: input_controller, ball, paddle, vga_controller
+-- Dependencies: input_controller, ball, paddle, vga_controller, vga_test_pattern
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
@@ -40,7 +40,11 @@ entity game is
             -- seven seg (dev)
             seg             : out std_logic_vector(0 to 6);
             dp              : out std_logic;
-            an              : out std_logic_vector(3 downto 0) );
+            an              : out std_logic_vector(3 downto 0);
+            
+            -- vga
+            rgb             : out std_logic_vector(11 downto 0);
+            hsync, vsync    : out std_logic );
 end game;
 
 architecture Behavioral of game is
@@ -83,7 +87,7 @@ component paddle is
 end component;
 
 component vga_controller is
-    Port (  clk             : in std_logic;
+    Port (  mclk            : in std_logic;
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic;
             x               : out std_logic_vector(9 downto 0);
@@ -91,8 +95,11 @@ component vga_controller is
             color           : out std_logic_vector(11 downto 0) );
 end component;
 
--- TODO: vga out
-
+component vga_test_pattern is
+    Port (  row             : in std_logic_vector(8 downto 0);
+            column          : in std_logic_vector(9 downto 0);
+            color           : out std_logic_vector(11 downto 0) );
+end component;
 
 -- SIGNALS
 
@@ -111,6 +118,11 @@ signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 -- step clk
 signal step : std_logic := '0';
 signal step_count : integer := 0;
+
+-- vga
+signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
+signal vga_y : std_logic_vector(8 downto 0) := (others => '0');
+signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
 
 
 -- CONSTANTS
@@ -190,6 +202,22 @@ PADDLE_1_ENT: paddle port map (
     home => PADDLE_HOME,
     v => controller_1,
     y => paddle_1_y );
+
+-- vga output
+VGA_ENT: vga_controller port map (
+    mclk => mclk,
+    rgb => rgb,
+    hsync => hsync,
+    vsync => vsync,
+    x => vga_x,
+    y => vga_y,
+    color => vga_color );
+
+-- vga test pattern
+VGA_TEST_ENT: vga_test_pattern port map (
+    row => vga_y,
+    column => vga_x,
+    color => vga_color );
 
 
 end Behavioral;
