@@ -25,6 +25,8 @@ library UNISIM;
 use UNISIM.VComponents.all;
 
 
+-- ENTITY DECLARATION
+
 entity vga_controller is
     port(clk:              in std_logic;
          rgb:              out std_logic_vector( 11 downto 0 );
@@ -32,6 +34,9 @@ entity vga_controller is
 end vga_controller;
 
 architecture Behavioral of vga_controller is
+
+
+-- COMPONENT DECLARATION
 
 component vga_sync is
 	port(clk:              in std_logic; --25 Mhz clock
@@ -46,6 +51,8 @@ component vga_test_pattern is
 end component;
 
 
+-- SIGNALS
+
 -- Signals for the clock divider, which divides the master clock down to 25 MHz
 constant CLOCK_DIVIDER_VALUE: integer := 2;  
 signal rclkdiv: unsigned(22 downto 0) := (others => '0');    -- clock divider counter
@@ -58,6 +65,10 @@ signal video_on: std_logic := '1';
 signal color: std_logic_vector(11 downto 0) :=  (others => '0');
 
 begin
+
+
+-- PROCESSES
+
 -- Clock buffer for the 25 MHz clock
 -- The BUFG component puts the slow clock onto the FPGA clocking network
 slow_clock_buffer: BUFG
@@ -86,7 +97,10 @@ begin
         end if;
     end if;
 end process video_enabler;
-       
+
+
+-- COMPONENT INITIALIZATION
+
 -- VGA Sync:
 sync: vga_sync port map(
             clk=>rclk, 

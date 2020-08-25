@@ -35,7 +35,12 @@ entity game is
             spi_sdata_0     : in std_logic;
             spi_sdata_1     : in std_logic;
             spi_sclk        : out std_logic;
-            spi_cs          : out std_logic );
+            spi_cs          : out std_logic;
+            
+            -- seven seg (dev)
+            seg             : out std_logic_vector(0 to 6);
+            dp              : out std_logic;
+            an              : out std_logic_vector(3 downto 0) );
 end game;
 
 architecture Behavioral of game is
@@ -50,7 +55,10 @@ component input_controller is
             spi_sdata_0     : in std_logic;
             spi_sdata_1     : in std_logic;
             controller_0    : out std_logic_vector(3 downto 0);
-            controller_1    : out std_logic_vector(3 downto 0) );
+            controller_1    : out std_logic_vector(3 downto 0);
+            seg             : out std_logic_vector(0 to 6);
+            dp              : out std_logic;
+            an              : out std_logic_vector(3 downto 0) );
 end component;
 
 component ball is
@@ -139,8 +147,11 @@ INPUT_CONTROLLER_ENT: input_controller port map (
     spi_sdata_0 => spi_sdata_0,
     spi_sdata_1 => spi_sdata_1,
     controller_0 => controller_0,
-    controller_1 => controller_1 );
-    
+    controller_1 => controller_1,
+    seg => seg,
+    dp => dp,
+    an => an );
+
 -- ball
 BALL_ENT: ball port map (
     clk => mclk,
