@@ -92,7 +92,7 @@ component vga_controller is
             hsync, vsync    : out std_logic;
             x               : out std_logic_vector(9 downto 0);
             y               : out std_logic_vector(8 downto 0);
-            color           : out std_logic_vector(11 downto 0) );
+            color           : in std_logic_vector(11 downto 0) );
 end component;
 
 component vga_test_pattern is
@@ -133,7 +133,7 @@ constant BALL_HOME_X : std_logic_vector(9 downto 0) := (others => '0');
 constant BALL_HOME_Y : std_logic_vector(8 downto 0) := (others => '0');
 constant PADDLE_HEIGHT : integer := 15;
 constant PADDLE_WIDTH : integer := 3;
-constant PADDLE_HOME : std_logic_vector(8 downto 0) := "11110000"; -- 240
+constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
 
 -- internals
 constant STEP_DIV : integer := 10000000; -- 10 Hz step

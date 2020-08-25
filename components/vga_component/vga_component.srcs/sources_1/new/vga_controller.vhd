@@ -43,15 +43,11 @@ architecture Behavioral of vga_controller is
 -- COMPONENT DECLARATION
 
 component vga_sync is
-	port(clk:              in std_logic; --25 Mhz clock
-         pixel_x, pixel_y: out  std_logic_vector( 9 downto 0); 
-         video_on:         out std_logic;
-         hsync, vsync:     out std_logic);
-end component;
-
-component vga_test_pattern is
-	port( row, column			: in  std_logic_vector( 9 downto 0);
-		  color				    : out std_logic_vector(11 downto 0));
+	port(clk            : in std_logic; --25 Mhz clock
+         pixel_x        : out std_logic_vector( 9 downto 0); 
+         pixel_y        : out std_logic_vector(8 downto 0);
+         video_on       :  out std_logic;
+         hsync, vsync   :  out std_logic );
 end component;
 
 

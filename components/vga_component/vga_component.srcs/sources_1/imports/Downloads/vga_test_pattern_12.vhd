@@ -39,7 +39,8 @@ architecture Behavioral of vga_test_pattern is
     constant DARK_BLU   : std_logic_vector(11 downto 0) := "000001001000";
     constant DARK_PUR   : std_logic_vector(11 downto 0) := "010000001000";
 
-	signal urow, ucolumn: unsigned(9 downto 0);
+	signal urow : unsigned(8 downto 0);
+	signal ucolumn : unsigned(9 downto 0);
 	
 begin
 
