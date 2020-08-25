@@ -40,8 +40,8 @@ port (mclk		: in std_logic;	    -- FPGA board master clock (100 MHz)
       an 	: out std_logic_vector(3 downto 0);
       
       -- primary output
-      controller_0 : out std_logic_vector(2 downto 0);
-      controller_1 : out std_logic_vector(2 downto 0) );
+      controller_0 : out std_logic_vector(3 downto 0);
+      controller_1 : out std_logic_vector(3 downto 0) );
 end Input_Controller;
 
 architecture Behavioral of Input_Controller is
@@ -168,8 +168,8 @@ begin
     out_1 <= unsigned(ad_data_filtered_1) / 455;
 
     -- map final controller outputs
-    controller_0 <= std_logic_vector(out_0(2 downto 0));
-    controller_1 <= std_logic_vector(out_1(2 downto 0));
+    controller_0 <= std_logic_vector(out_0(3 downto 0));
+    controller_1 <= std_logic_vector(out_1(3 downto 0));
 end process scale_output_proc;
 
 -- controller
