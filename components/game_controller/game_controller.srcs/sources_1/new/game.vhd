@@ -135,6 +135,8 @@ constant BALL_HOME_Y : std_logic_vector(8 downto 0) := (others => '0');
 constant PADDLE_HEIGHT : integer := 15;
 constant PADDLE_WIDTH : integer := 3;
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
+constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000";
+constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000";
 
 -- internals
 constant STEP_DIV : integer := 10000000; -- 10 Hz step
