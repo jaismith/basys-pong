@@ -22,7 +22,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity collison_detector is
+entity collision_detector is
     Port ( clk      : in std_logic;
     
            -- coordinates to be checked
@@ -50,9 +50,9 @@ entity collison_detector is
            bottom_collision  : out std_logic;
            right_collision  : out std_logic;
            left_collision   : out std_logic);
-end collison_detector;
+end collision_detector;
 
-architecture Behavioral of collison_detector is
+architecture Behavioral of collision_detector is
 
 -- SIGNALS
 
@@ -61,7 +61,7 @@ architecture Behavioral of collison_detector is
 --graphics
 constant X_ACTIVE : integer := 640;
 constant Y_ACTIVE : integer := 480;
--- collisions
+-- outputs
 
 -- PROCESSES
 
@@ -69,7 +69,6 @@ begin
 check_col: process(clk)
 begin 
     if rising_edge(clk) then
-    
         -- DEFAULT COLLISION VALUES
         p1_collision     <= '0';
         p2_collision     <= '0';
@@ -99,7 +98,7 @@ begin
         -- ball
         if unsigned(b_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(b_x) + unsigned(b_diam) then
             if unsigned(b_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(b_y) + unsigned(b_diam) then
-                p1_collision <= '1';
+                ball_collision <= '1';
             end if;
         end if;
         
