@@ -101,6 +101,7 @@ component vga_test_pattern is
             color           : out std_logic_vector(11 downto 0) );
 end component;
 
+
 -- SIGNALS
 
 -- controller
