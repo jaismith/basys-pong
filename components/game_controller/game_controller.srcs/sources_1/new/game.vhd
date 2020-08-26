@@ -95,12 +95,6 @@ component vga_controller is
             color           : in std_logic_vector(11 downto 0) );
 end component;
 
-component vga_test_pattern is
-    Port (  row             : in std_logic_vector(8 downto 0);
-            column          : in std_logic_vector(9 downto 0);
-            color           : out std_logic_vector(11 downto 0) );
-end component;
-
 component collision_detector is
     Port (  clk             : in std_logic;
             check_x         : in std_logic_vector(9 downto 0);
@@ -296,12 +290,6 @@ VGA_ENT: vga_controller port map (
     vsync => vsync,
     x => vga_x,
     y => vga_y,
-    color => vga_color );
-
--- vga test pattern
-VGA_TEST_ENT: vga_test_pattern port map (
-    row => vga_y,
-    column => vga_x,
     color => vga_color );
 
 -- collision detector
