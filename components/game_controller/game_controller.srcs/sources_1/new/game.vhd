@@ -42,9 +42,13 @@ entity game is
             dp              : out std_logic;
             an              : out std_logic_vector(3 downto 0);
             
+            -- led step indicator (dev)
+            step_out        : out std_logic;
+            
             -- vga
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic );
+
 end game;
 
 architecture Behavioral of game is
@@ -188,7 +192,7 @@ begin
             step <= '0';
         
             -- transition
-            if vga_y = "111100000" then
+            if vga_y = "0111100000" then
                 step_next <= enabled;
             end if;
             
@@ -204,7 +208,7 @@ begin
             step <= '0';
             
             -- transition
-            if vga_y = "000000000" then
+            if vga_y = "0000000000" then
                 step_next <= waiting;
             end if;
     end case;
@@ -215,6 +219,7 @@ step_update: process(mclk)
 begin
     if rising_edge(mclk) then
         step_curr <= step_next;
+        step_out <= step;
     end if;
 end process step_update;
 
@@ -226,11 +231,7 @@ begin
         
         if paddle_0_collision = '1'
             or paddle_1_collision = '1'
-            or ball_collision = '1'
-            or top_collision = '1'
-            or bottom_collision = '1'
-            or right_collision = '1'
-            or left_collision = '1' then
+            or ball_collision = '1' then
             vga_color <= "111111111111";
         end if;
     end if;
