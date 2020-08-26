@@ -91,7 +91,7 @@ component vga_controller is
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic;
             x               : out std_logic_vector(9 downto 0);
-            y               : out std_logic_vector(8 downto 0);
+            y               : out std_logic_vector(9 downto 0);
             color           : in std_logic_vector(11 downto 0) );
 end component;
 
