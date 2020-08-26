@@ -125,7 +125,7 @@ end component;
 -- TYPES
 
 type step_statetype is (waiting, enabled, done);
-
+type check_statetype is (waiting, vga_check, ball_check, p1_check, p2_check);
 
 -- SIGNALS
 
@@ -144,6 +144,10 @@ signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 -- step clk
 signal step : std_logic := '0';
 signal step_curr, step_next : step_statetype := waiting;
+
+-- check fsm
+signal check : std_logic := '0';
+signal check_curr, check_next : check_statetype := waiting;
 
 -- vga
 signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
@@ -180,6 +184,59 @@ begin
 
 
 -- PROCESSES
+bounce: process(mclk)
+begin
+    if rising_edge(mclk)then
+        if check_curr = ball_check then
+            if top_collision = '1' or bottom_collision = '1' then
+                ball_v_y <= not(ball_v_y);
+            end if;
+            
+            if paddle_0_collision = '1' and ball_collision = '1' then
+                ball_v_x <= not(ball_v_x);
+            end if;
+            
+            if paddle_1_collision = '1' and ball_collision = '1' then
+               ball_v_x <= not(ball_v_x);
+            end if;
+            
+            if left_collision = '1' or right_collision = '1' then
+                ball_v_x <= not(ball_v_x);
+            end if;
+        end if;
+       
+    end if;
+end process bounce;
+
+--checking pixels logic
+check_comb: process(check_curr)
+begin
+    check_next <= check_curr;
+    case check_curr is 
+        when waiting =>
+            if step_curr = done then
+                check_next <= vga_check;
+            end if;
+        when vga_check =>
+            check_x <= vga_x;
+            check_y <= vga_y(8 downto 0);
+            if step_curr = done then
+                check_next <= ball_check;
+            end if;
+        when ball_check =>
+            check_x <= PADDLE_0_X;
+            check_y <= paddle_0_y;
+            
+            check_next <= p1_check;
+        when p1_check =>
+            check_x <= PADDLE_1_X;
+            check_y <= paddle_0_y;
+            
+            check_next <= waiting;
+        when others =>
+            check_next <= check_curr;
+    end case;
+end process check_comb;
 
 -- step combinational logic
 step_comb: process(vga_y, step_curr)
@@ -214,14 +271,15 @@ begin
     end case;
 end process step_comb;
 
--- step update logic
-step_update: process(mclk)
+-- fsm update logic
+fsm_update: process(mclk)
 begin
     if rising_edge(mclk) then
         step_curr <= step_next;
         step_out <= step;
+        check_curr <= check_next;
     end if;
-end process step_update;
+end process fsm_update;
 
 -- gen pixel logic
 gen_pixel: process(mclk)
@@ -238,15 +296,17 @@ begin
 end process gen_pixel; 
 
 -- update x, y during vga scan
-update_pixel: process(mclk)
-begin
-    if rising_edge(mclk) then
-        if unsigned(vga_x) < 640 and unsigned(vga_y) < 480 then
-            check_x <= vga_x;
-            check_y <= vga_y(8 downto 0);
-        end if;
-    end if;
-end process update_pixel;
+--update_pixel: process(mclk)
+--begin
+--    if rising_edge(mclk) then
+        
+--        if unsigned(vga_x) < 640 and unsigned(vga_y) < 480 then
+--            check_x <= vga_x;
+--            check_y <= vga_y(8 downto 0);
+--        end if;
+--    end if;
+    
+--end process update_pixel;
 
 
 -- COMPONENT INITIALIZATIONS
