@@ -41,10 +41,7 @@ entity game is
             seg             : out std_logic_vector(0 to 6);
             dp              : out std_logic;
             an              : out std_logic_vector(3 downto 0);
-            
-            -- led step indicator (dev)
-            step_out        : out std_logic;
-            
+                        
             -- vga
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic );
@@ -125,7 +122,7 @@ end component;
 -- TYPES
 
 type step_statetype is (waiting, enabled, done);
-type check_statetype is (waiting, vga_check, ball_check, p1_check, p2_check);
+type check_statetype is (waiting, ball_check_setup, ball_check);
 
 -- SIGNALS
 
@@ -153,7 +150,6 @@ signal check_curr, check_next : check_statetype := waiting;
 signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
 signal vga_y : std_logic_vector(9 downto 0) := (others => '0');
 signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
-signal video_on : std_logic := '0';
 
 -- collision detection signals
 signal check_x : std_logic_vector(9 downto 0) := (others => '0');
@@ -183,58 +179,46 @@ constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 begin
 
 
--- PROCESSES
-bounce: process(mclk)
-begin
-    if rising_edge(mclk)then
-        if check_curr = ball_check then
-            if top_collision = '1' or bottom_collision = '1' then
-                ball_v_y <= not(ball_v_y);
-            end if;
-            
-            if paddle_0_collision = '1' and ball_collision = '1' then
-                ball_v_x <= not(ball_v_x);
-            end if;
-            
-            if paddle_1_collision = '1' and ball_collision = '1' then
-               ball_v_x <= not(ball_v_x);
-            end if;
-            
-            if left_collision = '1' or right_collision = '1' then
-                ball_v_x <= not(ball_v_x);
-            end if;
-        end if;
-       
-    end if;
-end process bounce;
-
---checking pixels logic
+-- bounce check combinational logic
 check_comb: process(check_curr)
 begin
-    check_next <= check_curr;
-    case check_curr is 
+    if step_curr = waiting then
+        check_next <= waiting;
+    end if;
+
+    case check_curr is
         when waiting =>
-            if step_curr = done then
-                check_next <= vga_check;
-            end if;
-        when vga_check =>
+            -- set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
+        
+            -- transition
             if step_curr = done then
                 check_next <= ball_check;
             end if;
+            
+        when ball_check_setup =>
+            -- set vals (start with ball)
+            check_x <= ball_x;
+            check_y <= ball_y;
+            
+            -- transition
+            check_next <= ball_check;
+            
         when ball_check =>
-            check_x <= PADDLE_0_X;
-            check_y <= paddle_0_y;
+            -- x bounce
+            if paddle_0_collision = '1'
+                or paddle_1_collision = '1'
+                or right_collision = '1'
+                or left_collision = '1' then
+                ball_v_x <= not(ball_v_x);
+            end if;
             
-            check_next <= p1_check;
-        when p1_check =>
-            check_x <= PADDLE_1_X;
-            check_y <= paddle_0_y;
-            
-            check_next <= waiting;
-        when others =>
-            check_next <= check_curr;
+            -- y bounce
+            if top_collision = '1'
+                or bottom_collision = '1' then
+                ball_v_y <= not(ball_v_y);
+            end if;
     end case;
 end process check_comb;
 
@@ -249,7 +233,7 @@ begin
             step <= '0';
         
             -- transition
-            if vga_y = "0111100000" then
+            if vga_y = "0111100000" and running = '1' then
                 step_next <= enabled;
             end if;
             
@@ -276,7 +260,6 @@ fsm_update: process(mclk)
 begin
     if rising_edge(mclk) then
         step_curr <= step_next;
-        step_out <= step;
         check_curr <= check_next;
     end if;
 end process fsm_update;
@@ -294,19 +277,6 @@ begin
         end if;
     end if;
 end process gen_pixel; 
-
--- update x, y during vga scan
---update_pixel: process(mclk)
---begin
---    if rising_edge(mclk) then
-        
---        if unsigned(vga_x) < 640 and unsigned(vga_y) < 480 then
---            check_x <= vga_x;
---            check_y <= vga_y(8 downto 0);
---        end if;
---    end if;
-    
---end process update_pixel;
 
 
 -- COMPONENT INITIALIZATIONS

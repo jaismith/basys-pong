@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="38" Path="C:/Users/BLADE-YUNIVE/Documents/~20X/ENGS 031/basys-pong/components/game_controller/game_controller.xpr">
+<Project Version="7" Minor="38" Path="C:/Users/jksmi/Documents/Code/basys-pong/components/game_controller/game_controller.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="c57bac2754244b8082a29c78b421b66b"/>
@@ -126,13 +126,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/game.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../vga_component/vga_component.srcs/sources_1/imports/Downloads/vga_test_pattern_12.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
