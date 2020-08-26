@@ -1,16 +1,16 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: ENGS 31 20X
+-- Engineer: Jai K. Smith
 -- 
--- Create Date: 08/25/2020 11:36:15 PM
--- Design Name: 
+-- Create Date: 08/26/2020 12:13:17 AM
+-- Design Name: letter entity
 -- Module Name: letter - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- Project Name: 20X Pong
+-- Target Devices: Diligent Basys3
+-- Tool Versions: Vivado 2018.2.2
+-- Description: letter entity
 -- 
--- Dependencies: 
+-- Dependencies:
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
