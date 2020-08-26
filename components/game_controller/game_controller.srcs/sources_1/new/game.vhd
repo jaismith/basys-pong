@@ -101,7 +101,6 @@ component vga_test_pattern is
             color           : out std_logic_vector(11 downto 0) );
 end component;
 
-
 component collision_detector is
     Port (  clk             : in std_logic;
             check_x         : in std_logic_vector(9 downto 0);
@@ -124,6 +123,12 @@ component collision_detector is
             left_collision  : out std_logic );
 end component;
 
+
+-- TYPES
+
+type step_statetype is (waiting, enabled, done);
+
+
 -- SIGNALS
 
 -- controller
@@ -140,12 +145,13 @@ signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 
 -- step clk
 signal step : std_logic := '0';
-signal step_count : integer := 0;
+signal step_curr, step_next : step_statetype := waiting;
 
 -- vga
 signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
-signal vga_y : std_logic_vector(8 downto 0) := (others => '0');
+signal vga_y : std_logic_vector(9 downto 0) := (others => '0');
 signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
+signal video_on : std_logic := '0';
 
 -- collision detection signals
 signal check_x : std_logic_vector(9 downto 0) := (others => '0');
@@ -171,27 +177,70 @@ constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
 constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
 constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 
--- internals
-constant STEP_DIV : integer := 10000000; -- 10 Hz step
 
 begin
 
 
 -- PROCESSES
 
--- step clk divider
-step_proc: process(mclk)
+-- step combinational logic
+step_comb: process(vga_y, step_curr)
+begin
+    step_next <= step_curr;
+    
+    case step_curr is
+        when waiting =>
+            -- set step
+            step <= '0';
+        
+            -- transition
+            if vga_y = "111100000" then
+                step_next <= enabled;
+            end if;
+            
+        when enabled =>
+            -- set step
+            step <= '1';
+            
+            -- transition
+            step_next <= done;
+            
+        when done =>
+            -- set step
+            step <= '0';
+            
+            -- transition
+            if vga_y = "000000000" then
+                step_next <= waiting;
+            end if;
+    end case;
+end process step_comb;
+
+-- step update logic
+step_update: process(mclk)
 begin
     if rising_edge(mclk) then
-        if step_count = (STEP_DIV / 2) - 1 then
-            step <= '1';
-            step_count <= 0;
-        else
-            step <= '0';
-            step_count <= step_count + 1;
+        step_curr <= step_next;
+    end if;
+end process step_update;
+
+-- gen pixel logic
+gen_pixel: process(mclk)
+begin
+    if rising_edge(mclk) then
+        vga_color <= "000000000000";
+        
+        if paddle_0_collision = '1'
+            or paddle_1_collision = '1'
+            or ball_collision = '1'
+            or top_collision = '1'
+            or bottom_collision = '1'
+            or right_collision = '1'
+            or left_collision = '1' then
+            vga_color <= "111111111111";
         end if;
     end if;
-end process step_proc;
+end process gen_pixel; 
 
 
 -- COMPONENT INITIALIZATIONS
