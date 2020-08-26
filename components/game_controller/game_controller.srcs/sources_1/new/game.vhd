@@ -236,6 +236,17 @@ begin
     end if;
 end process gen_pixel; 
 
+-- update x, y during vga scan
+update_pixel: process(mclk)
+begin
+    if rising_edge(mclk) then
+        if unsigned(vga_x) < 640 and unsigned(vga_y) < 480 then
+            check_x <= vga_x;
+            check_y <= vga_y(8 downto 0);
+        end if;
+    end if;
+end process update_pixel;
+
 
 -- COMPONENT INITIALIZATIONS
 
