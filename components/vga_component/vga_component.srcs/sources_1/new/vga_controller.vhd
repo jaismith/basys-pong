@@ -30,10 +30,9 @@ use UNISIM.VComponents.all;
 
 entity vga_controller is
     port(   mclk           : in std_logic;
-            rgb            : out std_logic_vector( 11 downto 0 );
+            rgb            : out std_logic_vector(11 downto 0 );
             hsync, vsync   : out std_logic;
-            x              : out std_logic_vector(9 downto 0);
-            y              : out std_logic_vector(8 downto 0);
+            x, y           : out std_logic_vector(9 downto 0);
             color          : in std_logic_vector(11 downto 0) );
 end vga_controller;
 
@@ -43,11 +42,10 @@ architecture Behavioral of vga_controller is
 -- COMPONENT DECLARATION
 
 component vga_sync is
-	port(clk            : in std_logic; --25 Mhz clock
-         pixel_x        : out std_logic_vector( 9 downto 0); 
-         pixel_y        : out std_logic_vector(8 downto 0);
-         video_on       :  out std_logic;
-         hsync, vsync   :  out std_logic );
+	port(clk               : in std_logic; --25 Mhz clock
+         pixel_x, pixel_y  : out std_logic_vector(9 downto 0); 
+         video_on          : out std_logic;
+         hsync, vsync      : out std_logic );
 end component;
 
 

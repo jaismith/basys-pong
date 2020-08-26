@@ -14,8 +14,7 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity vga_test_pattern is
-	port(	row             : in std_logic_vector(8 downto 0);
-	        column			: in std_logic_vector(9 downto 0);
+	port(	row, column     : in std_logic_vector(9 downto 0);
 			color			: out std_logic_vector(11 downto 0) );
 end vga_test_pattern;
 
@@ -39,8 +38,7 @@ architecture Behavioral of vga_test_pattern is
     constant DARK_BLU   : std_logic_vector(11 downto 0) := "000001001000";
     constant DARK_PUR   : std_logic_vector(11 downto 0) := "010000001000";
 
-	signal urow : unsigned(8 downto 0);
-	signal ucolumn : unsigned(9 downto 0);
+	signal urow, ucolumn : unsigned(9 downto 0);
 	
 begin
 

@@ -27,12 +27,11 @@ use ieee.numeric_std.all;
 -- ENTITY DECLARATION
 
 entity vga_sync is
-    port(   clk             : in std_logic; --25 Mhz clock
-            pixel_x         : out std_logic_vector(9 downto 0);
-            pixel_y         : out std_logic_vector(8 downto 0);
-            video_on        : out std_logic;
-            hsync           : out std_logic;
-            vsync           : out std_logic);
+    port(   clk                 : in std_logic; --25 Mhz clock
+            pixel_x, pixel_y    : out std_logic_vector(9 downto 0);
+            video_on            : out std_logic;
+            hsync               : out std_logic;
+            vsync               : out std_logic);
 end vga_sync;
 
 architecture Behavioral of vga_sync is
@@ -138,6 +137,6 @@ begin
 end process v_counter;
 
 pixel_x <= std_logic_vector(uh_count);
-pixel_y <= std_logic_vector(uv_count(8 downto 0));
+pixel_y <= std_logic_vector(uv_count);
 
 end Behavioral;
