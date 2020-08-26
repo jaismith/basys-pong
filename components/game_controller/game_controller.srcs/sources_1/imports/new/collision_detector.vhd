@@ -28,6 +28,8 @@ entity collision_detector is
            -- coordinates to be checked
            check_x  : in std_logic_vector(9 downto 0);
            check_y  : in std_logic_vector(8 downto 0);
+           check_w  : in std_logic_vector(1 downto 0);
+           check_h  : in std_logic_vector(3 downto 0);
            
            -- paddles
            p_width : in std_logic_vector(1 downto 0);
@@ -93,25 +95,34 @@ begin
             bottom_collision <= '1';
         end if;
         
+          -- for width and height included
+          if unsigned(check_x) + unsigned(check_w) = X_ACTIVE - 1 then
+              right_collision <= '1';
+          end if;
+          if unsigned(check_y) + unsigned(check_h) = Y_ACTIVE - 1 then
+              bottom_collision <= '1';
+          end if;
+              
+              
         -- OBJECT COLLISIONS
         
         -- ball
         if unsigned(b_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(b_x) + unsigned(b_diam) then
-            if unsigned(b_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(b_y) + unsigned(b_diam) then
+            if unsigned(b_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(b_y) + unsigned(b_diam)  then
                 ball_collision <= '1';
             end if;
         end if;
         
         -- paddle 1
-        if unsigned(p1_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p1_x) + unsigned(p_width) then
+        if unsigned(p1_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p1_x) + unsigned(p_width)  then
             if unsigned(p1_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(p1_y) + unsigned(p_height) then
                 p1_collision <= '1';
             end if;
         end if;
         
         -- paddle 2
-        if unsigned(p2_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p2_x) + unsigned(p_width) then
-            if unsigned(p2_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(p2_y) + unsigned(p_height) then
+        if unsigned(p2_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p2_x) + unsigned(p_width)  then
+            if unsigned(p2_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(p2_y) + unsigned(p_height)  then
                 p2_collision <= '1';
             end if;
         end if;

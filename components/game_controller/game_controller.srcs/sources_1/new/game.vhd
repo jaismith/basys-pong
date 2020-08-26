@@ -100,6 +100,8 @@ component collision_detector is
     Port (  clk             : in std_logic;
             check_x         : in std_logic_vector(9 downto 0);
             check_y         : in std_logic_vector(8 downto 0);
+            check_w         : in std_logic_vector(1 downto 0);
+            check_h         : in std_logic_vector(3 downto 0);
             p_width         : in std_logic_vector(1 downto 0);
             p_height        : in std_logic_vector(3 downto 0);
             p1_x            : in std_logic_vector(9 downto 0);
@@ -154,6 +156,8 @@ signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
 -- collision detection signals
 signal check_x : std_logic_vector(9 downto 0) := (others => '0');
 signal check_y : std_logic_vector(8 downto 0) := (others => '0');
+signal check_w : std_logic_vector(1 downto 0) := (others => '0');
+signal check_h : std_logic_vector(3 downto 0) := (others => '0');
 signal paddle_0_collision : std_logic := '0';
 signal paddle_1_collision : std_logic := '0';
 signal ball_collision : std_logic := '0';
@@ -191,7 +195,9 @@ begin
             -- set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
-        
+            check_w <= "10";
+            check_h <= "1000";
+            
             -- transition
             if step_curr = done then
                 check_next <= ball_check;
@@ -201,7 +207,8 @@ begin
             -- set vals (start with ball)
             check_x <= ball_x;
             check_y <= ball_y;
-            
+            check_w <= BALL_DIAM;
+            check_h <= BALL_DIAM & "00";
             -- transition
             check_next <= ball_check;
             
@@ -339,6 +346,8 @@ COLLISION_DETECTOR_ENT: collision_detector port map (
     clk => mclk,
     check_x => check_x,
     check_y => check_y,
+    check_w => check_w,
+    check_h => check_h,
     p_width => PADDLE_WIDTH,
     p_height => PADDLE_HEIGHT,
     p1_x => PADDLE_0_X,
