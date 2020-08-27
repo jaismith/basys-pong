@@ -158,6 +158,7 @@ signal check_x : std_logic_vector(9 downto 0) := (others => '0');
 signal check_y : std_logic_vector(8 downto 0) := (others => '0');
 signal check_w : std_logic_vector(1 downto 0) := (others => '0');
 signal check_h : std_logic_vector(3 downto 0) := (others => '0');
+
 signal paddle_0_collision : std_logic := '0';
 signal paddle_1_collision : std_logic := '0';
 signal ball_collision : std_logic := '0';
@@ -165,7 +166,7 @@ signal top_collision : std_logic := '0';
 signal bottom_collision : std_logic := '0';
 signal right_collision : std_logic := '0';
 signal left_collision : std_logic := '0';
-
+-- UNSIGNED 
 
 -- CONSTANTS
 
@@ -205,11 +206,19 @@ begin
             
         when ball_check_setup =>
             -- set vals (start with ball)
-            check_x <= ball_x;
-            check_y <= ball_y;
+            if ball_v_x = '1' then
+                check_x <= std_logic_vector(unsigned(ball_x) + 1);
+            else
+                check_x <= std_logic_vector(unsigned(ball_x) - 1);
+            end if;
+            if ball_v_y = '1' then
+                check_y <= std_logic_vector(unsigned(ball_y) + 1);
+            else
+                check_y <= std_logic_vector(unsigned(ball_y) - 1);
+            end if;
             check_w <= BALL_DIAM;
             check_h <= "00" & BALL_DIAM;
-            
+
             -- transition
             check_next <= ball_check;
             
@@ -280,7 +289,11 @@ begin
         
         if paddle_0_collision = '1'
             or paddle_1_collision = '1'
-            or ball_collision = '1' then
+            or ball_collision = '1'
+            or top_collision = '1'
+            or bottom_collision = '1'
+            or right_collision = '1'
+            or left_collision = '1' then
             vga_color <= "111111111111";
         end if;
     end if;
