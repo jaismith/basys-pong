@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: ENGS 31 20X
--- Engineer: Yunive Avendaño
+-- Engineer: Yunive Avendaï¿½o
 -- Create Date: 08/24/2020 01:07:02 PM
 -- Design Name: Collision Detector
 -- Module Name: collision_detector - Behavioral
