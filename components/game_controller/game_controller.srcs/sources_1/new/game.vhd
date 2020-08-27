@@ -228,7 +228,7 @@ begin
 
             -- transition
             check_next <= ball_check;
-            
+
         when ball_check =>
             -- x bounce
             if paddle_0_collision = '1'
@@ -237,7 +237,7 @@ begin
                 or left_collision = '1' then
                 ball_v_x <= not(ball_v_x);
             end if;
-            
+
             -- y bounce
             if top_collision = '1'
                 or bottom_collision = '1' then
@@ -347,14 +347,32 @@ begin
     if rising_edge(mclk) then
         vga_color <= "000000000000";
         
-        if paddle_0_collision = '1'
-            or paddle_1_collision = '1'
-            or ball_collision = '1'
-            or top_collision = '1'
-            or bottom_collision = '1'
-            or right_collision = '1'
-            or left_collision = '1' then
-            vga_color <= "111111111111";
+        if paddle_0_collision = '1' then
+            vga_color <= "110011001100";
+        end if;
+        
+        if paddle_1_collision = '1' then
+            vga_color <= "110011000000";
+        end if;
+        
+        if ball_collision = '1' then
+            vga_color <= "000011001100";
+        end if;
+        
+        if top_collision = '1' then
+            vga_color <= "000011000000";
+        end if;
+        
+        if bottom_collision = '1' then
+            vga_color <= "110000001100";
+        end if;
+        
+        if right_collision = '1' then
+            vga_color <= "110000000000";
+        end if;
+        
+        if left_collision = '1' then
+            vga_color <= "000000001100";
         end if;
     end if;
 end process gen_pixel; 
