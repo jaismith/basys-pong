@@ -82,6 +82,8 @@ component paddle is
     Port (  clk             : in std_logic;
             en              : in std_logic;
             reset           : in std_logic;
+            max_y           : in std_logic;
+            min_y           : in std_logic;
             home            : in std_logic_vector(8 downto 0);
             v               : in std_logic_vector(3 downto 0);
             y               : out std_logic_vector(8 downto 0) );
@@ -124,7 +126,7 @@ end component;
 -- TYPES
 
 type step_statetype is (waiting, enabled, done);
-type check_statetype is (waiting, ball_check_setup, ball_check);
+type check_statetype is (waiting, ball_check_setup, ball_check, paddle_0_check_setup,paddle_0_check, paddle_1_check_setup, paddle_1_check);
 
 
 -- SIGNALS
@@ -140,6 +142,10 @@ signal ball_v_x : std_logic := '0';
 signal ball_v_y : std_logic := '0';
 signal paddle_0_y : std_logic_vector(8 downto 0) := (others => '0');
 signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
+signal max_0_y: std_logic := '0';
+signal max_1_y: std_logic := '0';
+signal min_0_y: std_logic := '0';
+signal min_1_y: std_logic := '0';
 
 -- step clk
 signal step : std_logic := '0';
@@ -237,6 +243,59 @@ begin
                 or bottom_collision = '1' then
                 ball_v_y <= not(ball_v_y);
             end if;
+            
+            -- transition
+            check_next <= paddle_0_check_setup;
+            
+        when paddle_0_check_setup =>
+           -- set vals
+           check_x <= PADDLE_0_X;
+           check_y <= paddle_0_y;
+           check_w <= PADDLE_WIDTH;
+           check_h <= PADDLE_HEIGHT;
+           
+           -- transition
+           check_next <= paddle_0_check;
+           
+        when paddle_0_check =>
+           -- top collision           
+           if top_collision = '1' then
+               min_0_y <= '1';
+           else
+               min_0_y <= '0';
+           end if;
+           -- bottom collision
+           if top_collision = '1' then
+              max_0_y <= '1';
+           else
+              max_0_y <= '0';
+           end if;
+            -- transition
+           check_next <= paddle_0_check_setup;
+           
+        when paddle_1_check_setup =>
+          -- set vals
+          check_x <= PADDLE_1_X;
+          check_y <= paddle_1_y;
+          check_w <= PADDLE_WIDTH;
+          check_h <= PADDLE_HEIGHT;
+          
+          -- transition
+          check_next <= paddle_1_check;
+          
+        when paddle_1_check =>
+         -- top collision           
+         if top_collision = '1' then
+             min_1_y <= '1';
+         else
+             min_1_y <= '0';
+         end if;
+         -- bottom collision
+         if top_collision = '1' then
+            max_1_y <= '1';
+         else
+            max_1_y <= '0';
+         end if;         
     end case;
 end process check_comb;
 
@@ -333,6 +392,8 @@ PADDLE_0_ENT: paddle port map (
     clk => mclk,
     en => step,
     reset => reset,
+    max_y => max_0_y,
+    min_y => min_0_y,
     home => PADDLE_HOME,
     v => controller_0,
     y => paddle_0_y );
@@ -342,6 +403,8 @@ PADDLE_1_ENT: paddle port map (
     clk => mclk,
     en => step,
     reset => reset,
+    max_y => max_1_y,
+    min_y => min_1_y,
     home => PADDLE_HOME,
     v => controller_1,
     y => paddle_1_y );

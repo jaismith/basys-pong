@@ -27,6 +27,8 @@ entity paddle is
     Port ( clk      : in std_logic;
            en       : in std_logic;
            reset    : in std_logic;
+           max_y    : in std_logic;
+           min_y    : in std_logic;
            home     : in std_logic_vector (8 downto 0);
            v        : in std_logic_vector(3 downto 0);
            y        : out std_logic_vector (8 downto 0));
@@ -50,9 +52,9 @@ begin
             u_y <= unsigned(home);
         elsif en = '1' then
             -- update y
-            if u_v < 4 then
+            if u_v < 4 and max_y = '0' then
                 u_y <= u_y + (4 - u_v);
-            elsif u_v > 4 then
+            elsif u_v > 4 and min_y = '0' then
                 u_y <= u_y - (u_v - 4);
             end if;
         end if;
