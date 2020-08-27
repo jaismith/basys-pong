@@ -60,13 +60,6 @@ end collision_detector;
 architecture Behavioral of collision_detector is
 
 
--- CONSTANTS
-
---graphics
-constant X_ACTIVE : unsigned(9 downto 0) := "1001111111";
-constant Y_ACTIVE : unsigned(8 downto 0) := "111011111";
-
-
 begin
 
 
@@ -78,7 +71,7 @@ begin
         -- DEFAULT COLLISION VALUES
         p1_collision     <= '0';
         p2_collision     <= '0';
-        ball_collision   <= '0';
+        ball_collision   <= '1';
         top_collision    <= '0';
         bottom_collision <= '0';
         right_collision  <= '0';
@@ -86,34 +79,29 @@ begin
            
         -- BORDER COLLISIONS
   
-        if check_x = "0000000000" then
-            left_collision <= '1';
-        end if;
-        if check_y = "000000000" then
+        if unsigned(check_y) <= 0 then
             top_collision <= '1';
         end if;
-        if unsigned(check_x) = X_ACTIVE then
-            right_collision <= '1';
-        end if;
-        if unsigned(check_y) = Y_ACTIVE then
+        if unsigned(check_y) + unsigned(check_h) >= 479 then
             bottom_collision <= '1';
         end if;
-        
-        -- for width and height included
-        if unsigned(check_x) + unsigned(check_w) - 1 = X_ACTIVE then
+        if unsigned(check_x) + unsigned(check_w) >= 639 then
             right_collision <= '1';
         end if;
-        if unsigned(check_y) + unsigned(check_h) - 1 = Y_ACTIVE then
-            bottom_collision <= '1';
+        if unsigned(check_x) <= 0 then
+            left_collision <= '1';
         end if;
 
         -- OBJECT COLLISIONS
         
         -- ball
-        if unsigned(b_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(b_x) + unsigned(b_diam) - 1 then
-            if unsigned(b_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(b_y) + unsigned(b_diam) - 1  then
-                ball_collision <= '1';
-            end if;
+        if unsigned(b_x) + unsigned(b_diam) < unsigned(check_x)
+            or unsigned(b_x) > unsigned(check_x) + unsigned(check_w) - 1 then
+            ball_collision <= '0';
+        end if;
+        if unsigned(b_y) + unsigned(b_diam) < unsigned(check_y)
+            or unsigned(b_y) > unsigned(check_y) + unsigned(check_h) - 1 then
+            ball_collision <= '0';
         end if;
         
         -- paddle 1
@@ -129,7 +117,7 @@ begin
                 p2_collision <= '1';
             end if;
         end if;
-         
+
     end if;
 end process check_col;
 
