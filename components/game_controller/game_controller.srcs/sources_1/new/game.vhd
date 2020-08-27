@@ -233,8 +233,7 @@ begin
             end if;
 
             -- y bounce
-            if top_collision = '1'
-                or bottom_collision = '1' then
+            if bottom_collision = '1' then
                 ball_v_y <= not(ball_v_y);
             end if;
     end case;

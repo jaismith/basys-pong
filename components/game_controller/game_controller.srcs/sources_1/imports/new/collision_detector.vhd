@@ -69,8 +69,8 @@ check_col: process(clk)
 begin 
     if rising_edge(clk) then
         -- DEFAULT COLLISION VALUES
-        p1_collision     <= '0';
-        p2_collision     <= '0';
+        p1_collision     <= '1';
+        p2_collision     <= '1';
         ball_collision   <= '1';
         top_collision    <= '0';
         bottom_collision <= '0';
@@ -79,7 +79,7 @@ begin
            
         -- BORDER COLLISIONS
   
-        if unsigned(check_y) <= 0 then
+        if unsigned(check_y) <= 1 then
             top_collision <= '1';
         end if;
         if unsigned(check_y) + unsigned(check_h) >= 479 then
@@ -105,17 +105,23 @@ begin
         end if;
         
         -- paddle 1
-        if unsigned(p1_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p1_x) + unsigned(p_width) - 1  then
-            if unsigned(p1_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(p1_y) + unsigned(p_height) - 1 then
-                p1_collision <= '1';
-            end if;
+        if unsigned(p1_x) + unsigned(p_width) < unsigned(check_x)
+            or unsigned(p1_x) > unsigned(check_x) + unsigned(check_w) - 1 then
+            p1_collision <= '0';
+        end if;
+        if unsigned(p1_y) + unsigned(p_height) < unsigned(check_y)
+            or unsigned(p1_y) > unsigned(check_y) + unsigned(check_h) - 1 then
+            p1_collision <= '0';
         end if;
         
         -- paddle 2
-        if unsigned(p2_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(p2_x) + unsigned(p_width)  then
-            if unsigned(p2_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(p2_y) + unsigned(p_height)  then
-                p2_collision <= '1';
-            end if;
+        if unsigned(p2_x) + unsigned(p_width) < unsigned(check_x)
+            or unsigned(p2_x) > unsigned(check_x) + unsigned(check_w) - 1 then
+            p2_collision <= '0';
+        end if;
+        if unsigned(p2_y) + unsigned(p_height) < unsigned(check_y)
+            or unsigned(p2_y) > unsigned(check_y) + unsigned(check_h) - 1 then
+            p2_collision <= '0';
         end if;
 
     end if;
