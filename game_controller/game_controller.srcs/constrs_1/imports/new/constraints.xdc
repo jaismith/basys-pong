@@ -151,29 +151,29 @@ set_property PACKAGE_PIN G2 [get_ports {spi_sclk}]
 
 ##Pmod Header JB
 ##Sch name = JB1
-set_property PACKAGE_PIN A14 [get_ports {score_p_0[0]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_0[0]}]
+set_property PACKAGE_PIN A14 [get_ports {db_step_waiting}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_step_waiting}]
 ##Sch name = JB2
-set_property PACKAGE_PIN A16 [get_ports {score_p_0[1]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_0[1]}]
+set_property PACKAGE_PIN A16 [get_ports {db_step_enabled}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_step_enabled}]
 ##Sch name = JB3
-set_property PACKAGE_PIN B15 [get_ports {score_p_0[2]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_0[2]}]
+set_property PACKAGE_PIN B15 [get_ports {db_step_done}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_step_done}]
 ##Sch name = JB4
-set_property PACKAGE_PIN B16 [get_ports {score_p_0[3]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_0[3]}]
+set_property PACKAGE_PIN B16 [get_ports {db_check_waiting}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_check_waiting}]
 ##Sch name = JB7
-set_property PACKAGE_PIN A15 [get_ports {score_p_1[0]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_1[0]}]
+set_property PACKAGE_PIN A15 [get_ports {db_check_ball_setup}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_check_ball_setup}]
 ##Sch name = JB8
-set_property PACKAGE_PIN A17 [get_ports {score_p_1[1]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_1[1]}]
+set_property PACKAGE_PIN A17 [get_ports {db_check_ball}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_check_ball}]
 ##Sch name = JB9
-set_property PACKAGE_PIN C15 [get_ports {score_p_1[2]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_1[2]}]
+set_property PACKAGE_PIN C15 [get_ports {db_check_done}]
+	set_property IOSTANDARD LVCMOS33 [get_ports {db_check_done}]
 ##Sch name = JB10
-set_property PACKAGE_PIN C16 [get_ports {score_p_1[3]}]
-	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_1[3]}]
+#set_property PACKAGE_PIN C16 [get_ports {score_p_1[3]}]
+#	set_property IOSTANDARD LVCMOS33 [get_ports {score_p_1[3]}]
 
 
 

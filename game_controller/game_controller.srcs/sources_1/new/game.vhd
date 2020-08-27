@@ -42,10 +42,10 @@ entity game is
             dp              : out std_logic;
             an              : out std_logic_vector(3 downto 0);
             
-            --score
-            score_p_0       : out std_logic_vector(3 downto 0); 
-            score_p_1       : out std_logic_vector(3 downto 0);  
-                    
+         
+            -- debugging
+            db_step_waiting ,db_step_enabled ,db_step_done: out std_logic;
+            db_check_waiting ,db_check_ball_setup ,db_check_ball,db_check_done: out std_logic;
             -- vga
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic );
@@ -132,7 +132,13 @@ type check_statetype is (waiting, ball_check_setup, ball_check, done);
 
 
 -- SIGNALS
+-- debugging flags
+--signal db_step_waiting ,db_step_enabled ,db_step_done: std_logic;
+--signal db_check_waiting ,db_check_ball_setup ,db_check_ball,db_check_done: std_logic;
 
+-- scores
+signal score_p_0: std_logic_vector(3 downto 0) := (others => '0');
+signal score_p_1: std_logic_vector(3 downto 0) := (others => '0');
 -- controller
 signal controller_0 : std_logic_vector(3 downto 0) := (others => '0');
 signal controller_1 : std_logic_vector(3 downto 0) := (others => '0');
@@ -202,7 +208,10 @@ begin
             uscore_p_0 <=  uscore_p_0 + 1 ;
         elsif scored_1 = '1' then
             uscore_p_1 <=  uscore_p_1 + 1 ;
-        end if;    
+        else
+           uscore_p_0 <= uscore_p_0;
+           uscore_p_1 <= uscore_p_1;
+        end if;
         if reset = '1' then
             uscore_p_0 <= "0000";
             uscore_p_1 <= "0000";
@@ -215,12 +224,17 @@ begin
 end process score_logic;
 
 -- bounce check combinational logic
-check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_x, ball_v_y, ball_y, top_collision, bottom_collision, right_collision, left_collision)
+check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_x, ball_v_y, ball_y, top_collision, bottom_collision, right_collision, left_collision,paddle_0_collision, paddle_1_collision)
 begin
     check_next <= check_curr;
 
     case check_curr is
         when waiting =>
+            --debugging flags
+            db_check_waiting <= '1';
+            db_check_ball_setup <= '0';
+            db_check_ball <= '0';
+            db_check_done <= '0';
             -- set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
@@ -235,6 +249,11 @@ begin
             end if;
             
         when ball_check_setup =>
+            --debugging flags
+            db_check_waiting <= '0';
+            db_check_ball_setup <= '1';
+            db_check_ball <= '0';
+            db_check_done <= '0';
             -- set vals (start with ball)
             if ball_v_x = '1' then
                 check_x <= std_logic_vector(unsigned(ball_x) + 1);
@@ -253,6 +272,11 @@ begin
             check_next <= ball_check;
 
         when ball_check =>
+            --debugging flags
+            db_check_waiting <= '0';
+            db_check_ball_setup <= '0';
+            db_check_ball <= '1';
+            db_check_done <= '0';
             -- set vals
             -- paddle bounce
             if paddle_0_collision = '1'
@@ -290,6 +314,11 @@ begin
             check_next <= done;
             
         when done =>
+            --debugging flags
+            db_check_waiting <= '0';
+            db_check_ball_setup <= '0';
+            db_check_ball <= '0';
+            db_check_done <= '1';
             -- set vals
             scored_0 <= '0';
             scored_1 <= '0';
@@ -308,6 +337,11 @@ begin
     
     case step_curr is
         when waiting =>
+            --debugging flags
+            db_step_waiting <= '1';
+            db_step_enabled <= '0';
+            db_step_done <= '0';
+
             -- set step
             step <= '0';
         
@@ -317,6 +351,11 @@ begin
             end if;
             
         when enabled =>
+            --debugging flags
+            db_step_waiting <= '0';
+            db_step_enabled <= '1';
+            db_step_done <= '0';
+            
             -- set step
             step <= '1';
             
@@ -324,6 +363,10 @@ begin
             step_next <= done;
             
         when done =>
+            --debugging flags
+            db_step_waiting <= '0';
+            db_step_enabled <= '0';
+            db_step_done <= '1';
             -- set step
             step <= '0';
             
