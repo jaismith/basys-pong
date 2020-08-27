@@ -77,7 +77,7 @@
       <File Path="$PSRCDIR/sources_1/imports/new/collision_detector.vhd">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../collision_detector/collision_detector.srcs/sources_1/new/collision_detector.vhd"/>
-          <Attr Name="ImportTime" Val="1598400506"/>
+          <Attr Name="ImportTime" Val="1598561464"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -96,6 +96,14 @@
       </File>
       <File Path="$PPRDIR/../input_processor/input_processor.srcs/sources_1/imports/imports/sources_1/new/interface.vhd">
         <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/new/letter.vhd">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../letter_entity/letter_entity.srcs/sources_1/new/letter.vhd"/>
+          <Attr Name="ImportTime" Val="1598415223"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

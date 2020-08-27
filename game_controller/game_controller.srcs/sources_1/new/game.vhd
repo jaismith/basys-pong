@@ -115,13 +115,31 @@ component collision_detector is
             b_diam          : in std_logic_vector(1 downto 0);
             b_x             : in std_logic_vector(9 downto 0);
             b_y             : in std_logic_vector(8 downto 0);
+            score_0_0_x : in std_logic_vector(9 downto 0);
+            score_0_1_x : in std_logic_vector(9 downto 0);
+            score_1_0_x : in std_logic_vector(9 downto 0);
+            score_1_1_x : in std_logic_vector(9 downto 0);
+            score_y : in std_logic_vector(8 downto 0);
+            score_0_0_bitmap : in std_logic_vector(24 downto 0);
+            score_0_1_bitmap : in std_logic_vector(24 downto 0);
+            score_1_0_bitmap : in std_logic_vector(24 downto 0);
+            score_1_1_bitmap : in std_logic_vector(24 downto 0);
             p1_collision    : out std_logic;
             p2_collision    : out std_logic;
             ball_collision  : out std_logic;
             top_collision   : out std_logic;
             bottom_collision : out std_logic;
             right_collision : out std_logic;
-            left_collision  : out std_logic );
+            left_collision  : out std_logic;
+            score_0_0_collision : out std_logic;
+            score_0_1_collision : out std_logic;
+            score_1_0_collision : out std_logic;
+            score_1_1_collision : out std_logic );
+end component;
+
+component letter is
+    Port (  char            : in std_logic_vector(5 downto 0);
+            bitmap          : out std_logic_vector(24 downto 0) );
 end component;
 
 
@@ -171,14 +189,25 @@ signal top_collision : std_logic := '0';
 signal bottom_collision : std_logic := '0';
 signal right_collision : std_logic := '0';
 signal left_collision : std_logic := '0';
+signal score_0_0_collision : std_logic := '0';
+signal score_0_1_collision : std_logic := '0';
+signal score_1_0_collision : std_logic := '0';
+signal score_1_1_collision : std_logic := '0';
+
 
 --score logic signals
 signal scored_0 : std_logic := '0';
 signal scored_1 : std_logic := '0';
-
-
 signal uscore_p_0 : unsigned(3 downto 0) := "0000";
 signal uscore_p_1 : unsigned(3 downto 0) := "0000";
+signal score_0_0_char : std_logic_vector(5 downto 0) := (others => '0');
+signal score_0_0_bitmap : std_logic_vector(24 downto 0) := (others => '0');
+signal score_0_1_char : std_logic_vector(5 downto 0) := (others => '0');
+signal score_0_1_bitmap : std_logic_vector(24 downto 0) := (others => '0');
+signal score_1_0_char : std_logic_vector(5 downto 0) := (others => '0');
+signal score_1_0_bitmap : std_logic_vector(24 downto 0) := (others => '0');
+signal score_1_1_char : std_logic_vector(5 downto 0) := (others => '0');
+signal score_1_1_bitmap : std_logic_vector(24 downto 0) := (others => '0');
 
 -- CONSTANTS
 
@@ -191,6 +220,11 @@ constant PADDLE_WIDTH : std_logic_vector(1 downto 0) := "11";
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
 constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
 constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
+constant SCORE_0_0_X : std_logic_vector(9 downto 0) := "0100000000";
+constant SCORE_0_1_X : std_logic_vector(9 downto 0) := "0100001000";
+constant SCORE_1_0_X : std_logic_vector(9 downto 0) := "0110000000";
+constant SCORE_1_1_X : std_logic_vector(9 downto 0) := "0110001000";
+constant SCORE_Y : std_logic_vector(8 downto 0) := "000001111";
 
 
 begin
@@ -376,6 +410,13 @@ begin
         if left_collision = '1' then
             vga_color <= "000000001100";
         end if;
+        
+        if score_0_0_collision = '1'
+            or score_0_1_collision = '1'
+            or score_1_0_collision = '1'
+            or score_1_1_collision = '1' then
+            vga_color <= "000001001000";
+        end if;
     end if;
 end process gen_pixel; 
 
@@ -425,6 +466,23 @@ PADDLE_1_ENT: paddle port map (
     v => controller_1,
     y => paddle_1_y );
 
+-- letters (text mux)
+LETTER_0_0_ENT: letter port map (
+    char => score_0_0_char,
+    bitmap => score_0_0_bitmap );
+    
+LETTER_0_1_ENT: letter port map (
+    char => score_0_1_char,
+    bitmap => score_0_1_bitmap );
+    
+LETTER_1_0_ENT: letter port map (
+    char => score_1_0_char,
+    bitmap => score_1_0_bitmap );
+    
+LETTER_1_1_ENT: letter port map (
+    char => score_1_1_char,
+    bitmap => score_1_1_bitmap );
+
 -- vga output
 VGA_ENT: vga_controller port map (
     mclk => mclk,
@@ -451,13 +509,26 @@ COLLISION_DETECTOR_ENT: collision_detector port map (
     b_diam => BALL_DIAM,
     b_x => ball_x,
     b_y => ball_y,
+    score_0_0_x => SCORE_0_0_X,
+    score_0_1_x => SCORE_0_1_X,
+    score_1_0_x => SCORE_1_0_X,
+    score_1_1_x => SCORE_1_1_X,
+    score_y => SCORE_Y,
+    score_0_0_bitmap => score_0_0_bitmap,
+    score_0_1_bitmap => score_0_1_bitmap,
+    score_1_0_bitmap => score_1_0_bitmap,
+    score_1_1_bitmap => score_1_1_bitmap,
     p1_collision => paddle_0_collision,
     p2_collision => paddle_1_collision,
     ball_collision => ball_collision,
     top_collision => top_collision,
     bottom_collision => bottom_collision,
     right_collision => right_collision,
-    left_collision => left_collision );
+    left_collision => left_collision,
+    score_0_0_collision => score_0_0_collision,
+    score_0_1_collision => score_0_1_collision,
+    score_1_0_collision => score_1_0_collision,
+    score_1_1_collision => score_1_1_collision );
 
 
 end Behavioral;
