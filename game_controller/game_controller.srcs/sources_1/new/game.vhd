@@ -215,7 +215,7 @@ begin
 end process score_logic;
 
 -- bounce check combinational logic
-check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_x, ball_v_y, ball_y, top_collision, bottom_collision, right_collision, left_collision)
+check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_v_y, top_collision, bottom_collision, right_collision, left_collision)
 begin
     check_next <= check_curr;
 
@@ -231,7 +231,7 @@ begin
             
             -- transition
             if step_curr = done then
-                check_next <= ball_check;
+                check_next <= ball_check_setup;
             end if;
             
         when ball_check_setup =>
