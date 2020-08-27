@@ -136,8 +136,8 @@ signal controller_1 : std_logic_vector(3 downto 0) := (others => '0');
 -- entities
 signal ball_x : std_logic_vector(9 downto 0) := (others => '0');
 signal ball_y : std_logic_vector(8 downto 0) := (others => '0');
-signal ball_v_x : std_logic := '0';
-signal ball_v_y : std_logic := '0';
+signal ball_v_x : std_logic := '1';
+signal ball_v_y : std_logic := '1';
 signal paddle_0_y : std_logic_vector(8 downto 0) := (others => '0');
 signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 
@@ -173,8 +173,8 @@ signal left_collision : std_logic := '0';
 
 -- graphics
 constant BALL_DIAM : std_logic_vector(1 downto 0) := "11";
-constant BALL_HOME_X : std_logic_vector(9 downto 0) := (others => '0');
-constant BALL_HOME_Y : std_logic_vector(8 downto 0) := (others => '0');
+constant BALL_HOME_X : std_logic_vector(9 downto 0) := "0101000000";
+constant BALL_HOME_Y : std_logic_vector(8 downto 0) := "011110000";
 constant PADDLE_HEIGHT : std_logic_vector(3 downto 0) := "1111";
 constant PADDLE_WIDTH : std_logic_vector(1 downto 0) := "11";
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
