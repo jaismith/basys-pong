@@ -224,18 +224,30 @@ begin
             check_next <= ball_check;
 
         when ball_check =>
-            -- x bounce
+            -- paddle bounce
             if paddle_0_collision = '1'
-                or paddle_1_collision = '1'
-                or right_collision = '1'
-                or left_collision = '1' then
+                or paddle_1_collision = '1' then
                 ball_v_x <= not(ball_v_x);
             end if;
 
-            -- y bounce
-            if bottom_collision = '1'
-                or top_collision = '1' then
-                ball_v_y <= not(ball_v_y);
+            -- top wall bounce
+            if top_collision = '1' then
+                ball_v_y <= '1';
+            end if;
+            
+            -- bottom wall bounce
+            if bottom_collision = '1' then
+                ball_v_y <= '0';
+            end if;
+            
+            -- right wall bounce
+            if right_collision = '1' then
+                ball_v_x <= '0';
+            end if;
+            
+            -- left wall bounce
+            if left_collision = '1' then
+                ball_v_x <= '1';
             end if;
     end case;
 end process check_comb;
