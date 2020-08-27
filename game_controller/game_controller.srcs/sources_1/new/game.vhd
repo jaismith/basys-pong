@@ -41,7 +41,11 @@ entity game is
             seg             : out std_logic_vector(0 to 6);
             dp              : out std_logic;
             an              : out std_logic_vector(3 downto 0);
-                        
+            
+            --score
+            score_p_0       : out std_logic_vector(3 downto 0); 
+            score_p_1       : out std_logic_vector(3 downto 0);  
+                    
             -- vga
             rgb             : out std_logic_vector(11 downto 0);
             hsync, vsync    : out std_logic );
@@ -168,6 +172,13 @@ signal bottom_collision : std_logic := '0';
 signal right_collision : std_logic := '0';
 signal left_collision : std_logic := '0';
 
+--score logic signals
+signal scored_0 : std_logic := '0';
+signal scored_1 : std_logic := '0';
+
+
+signal uscore_p_0 : unsigned(3 downto 0) := "0000";
+signal uscore_p_1 : unsigned(3 downto 0) := "0000";
 
 -- CONSTANTS
 
@@ -184,6 +195,23 @@ constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 
 begin
 
+score_logic: process(mclk)
+begin
+    if rising_edge(mclk) then
+        if scored_0 = '1' then
+            uscore_p_0 <=  uscore_p_0 + 1 ;
+        elsif scored_1 = '1' then
+            uscore_p_0 <=  uscore_p_0 + 1 ;
+        end if;    
+        if reset = '1' then
+            uscore_p_0 <= "0000";
+            uscore_p_1 <= "0000";
+        end if;
+    end if;
+    -- map variables
+    score_p_0 <= std_logic_vector(uscore_p_0);
+    score_p_1 <= std_logic_vector(uscore_p_1);
+end process score_logic;
 
 -- bounce check combinational logic
 check_comb: process(check_curr)
@@ -224,6 +252,7 @@ begin
             check_next <= ball_check;
 
         when ball_check =>
+           
             -- paddle bounce
             if paddle_0_collision = '1'
                 or paddle_1_collision = '1' then
@@ -243,11 +272,17 @@ begin
             -- right wall bounce
             if right_collision = '1' then
                 ball_v_x <= '0';
+                scored_0 <= '1';
+            else
+                scored_0 <= '0';
             end if;
             
             -- left wall bounce
             if left_collision = '1' then
                 ball_v_x <= '1';
+                scored_1 <= '1';
+            else
+                scored_1 <= '0';
             end if;
     end case;
 end process check_comb;
