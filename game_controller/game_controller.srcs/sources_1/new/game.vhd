@@ -128,7 +128,7 @@ end component;
 -- TYPES
 
 type step_statetype is (waiting, enabled, done);
-type check_statetype is (waiting, ball_check_setup, ball_check);
+type check_statetype is (waiting, ball_check_setup, ball_check, done);
 
 
 -- SIGNALS
@@ -217,9 +217,7 @@ end process score_logic;
 -- bounce check combinational logic
 check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_x, ball_v_y, ball_y, top_collision, bottom_collision, right_collision, left_collision)
 begin
-    if step_curr = waiting then
-        check_next <= waiting;
-    end if;
+    check_next <= check_curr;
 
     case check_curr is
         when waiting =>
@@ -228,6 +226,8 @@ begin
             check_y <= vga_y(8 downto 0);
             check_w <= "01";
             check_h <= "0001";
+            scored_0 <= '0';
+            scored_1 <= '0';
             
             -- transition
             if step_curr = done then
@@ -287,7 +287,17 @@ begin
             end if;
             
             -- transition
-            check_next <= waiting;
+            check_next <= done;
+            
+        when done =>
+            -- set vals
+            scored_0 <= '0';
+            scored_1 <= '0';
+            
+            -- transition
+            if step_curr = waiting then
+                check_next <= waiting;
+            end if;
     end case;
 end process check_comb;
 
