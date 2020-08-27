@@ -76,7 +76,7 @@ begin
         bottom_collision <= '0';
         right_collision  <= '0';
         left_collision   <= '0';
-           
+
         -- BORDER COLLISIONS
   
         if unsigned(check_y) <= 1 then
