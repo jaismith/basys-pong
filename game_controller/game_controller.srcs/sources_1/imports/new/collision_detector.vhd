@@ -69,7 +69,8 @@ entity collision_detector is
            score_0_0_collision : out std_logic;
            score_0_1_collision : out std_logic;
            score_1_0_collision : out std_logic;
-           score_1_1_collision : out std_logic );
+           score_1_1_collision : out std_logic;
+           divider_collision : out std_logic );
 end collision_detector;
 
 architecture Behavioral of collision_detector is
@@ -147,23 +148,28 @@ begin
         if unsigned(score_y) <= unsigned(check_y) and unsigned(check_y) <= unsigned(score_y) + 4 then
             -- score 0 0
             if unsigned(score_0_0_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(score_0_0_x) + 4 then
-                score_0_0_collision <= score_0_0_bitmap(to_integer(unsigned(check_x) - unsigned(score_0_0_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
+                score_0_0_collision <= score_0_0_bitmap(24 - to_integer(unsigned(check_x) - unsigned(score_0_0_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
             end if;
             
             -- score 0 1
             if unsigned(score_0_1_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(score_0_1_x) + 4 then
-                score_0_1_collision <= score_0_1_bitmap(to_integer(unsigned(check_x) - unsigned(score_0_1_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
+                score_0_1_collision <= score_0_1_bitmap(24 - to_integer(unsigned(check_x) - unsigned(score_0_1_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
             end if;
             
             -- score 1 0
             if unsigned(score_1_0_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(score_1_0_x) + 4 then
-                score_1_0_collision <= score_1_0_bitmap(to_integer(unsigned(check_x) - unsigned(score_1_0_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
+                score_1_0_collision <= score_1_0_bitmap(24 - to_integer(unsigned(check_x) - unsigned(score_1_0_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
             end if;
             
             -- score 0 0
             if unsigned(score_1_1_x) <= unsigned(check_x) and unsigned(check_x) <= unsigned(score_1_1_x) + 4 then
-                score_1_1_collision <= score_1_1_bitmap(to_integer(unsigned(check_x) - unsigned(score_1_1_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
+                score_1_1_collision <= score_1_1_bitmap(24 - to_integer(unsigned(check_x) - unsigned(score_1_1_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
             end if;
+        end if;
+        
+        -- divider line
+        if unsigned(check_x) = 320 and unsigned(check_y) mod 10 < 5 then
+            divider_collision <= '1';
         end if;
     end if;
 end process check_col;

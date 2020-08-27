@@ -134,7 +134,8 @@ component collision_detector is
             score_0_0_collision : out std_logic;
             score_0_1_collision : out std_logic;
             score_1_0_collision : out std_logic;
-            score_1_1_collision : out std_logic );
+            score_1_1_collision : out std_logic;
+            divider_collision : out std_logic );
 end component;
 
 component letter is
@@ -193,6 +194,7 @@ signal score_0_0_collision : std_logic := '0';
 signal score_0_1_collision : std_logic := '0';
 signal score_1_0_collision : std_logic := '0';
 signal score_1_1_collision : std_logic := '0';
+signal divider_collision : std_logic := '0';
 
 
 --score logic signals
@@ -229,7 +231,7 @@ constant SCORE_Y : std_logic_vector(8 downto 0) := "000001111";
 
 begin
 
-score_logic: process(mclk, uscore_p_0, uscore_p_1)
+score_logic: process(mclk)
 begin
     if rising_edge(mclk) then
         if scored_0 = '1' then
@@ -241,15 +243,31 @@ begin
             uscore_p_0 <= "0000";
             uscore_p_1 <= "0000";
         end if;
+        
+        -- set chars
+        if uscore_p_0 > 9 then
+            score_0_0_char <= "000001";
+            score_0_1_char <= "00" & std_logic_vector(uscore_p_0 - 10);
+        else
+            score_0_0_char <= "000000";
+            score_0_1_char <= "00" & std_logic_vector(uscore_p_0);
+        end if;
+        if uscore_p_1 > 9 then
+            score_1_0_char <= "000001";
+            score_1_1_char <= "00" & std_logic_vector(uscore_p_1 - 10);
+        else
+            score_1_0_char <= "000000";
+            score_1_1_char <= "00" & std_logic_vector(uscore_p_1);
+        end if;
     end if;
+    
     -- map variables
     score_p_0 <= std_logic_vector(uscore_p_0);
     score_p_1 <= std_logic_vector(uscore_p_1);
-    
 end process score_logic;
 
 -- bounce check combinational logic
-check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_v_y, top_collision, bottom_collision, right_collision, left_collision)
+check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_x, ball_y, ball_v_x, ball_v_y, paddle_0_collision, paddle_1_collision, top_collision, bottom_collision, right_collision, left_collision)
 begin
     check_next <= check_curr;
 
@@ -288,10 +306,14 @@ begin
 
         when ball_check =>
             -- set vals
-            -- paddle bounce
-            if paddle_0_collision = '1'
-                or paddle_1_collision = '1' then
-                ball_v_x <= not(ball_v_x);
+            -- paddle left bounce
+            if paddle_0_collision = '1' then
+                ball_v_x <= '1';
+            end if;
+            
+            -- paddle right bounce
+            if paddle_1_collision = '1' then
+                ball_v_x <= '0';
             end if;
 
             -- top wall bounce
@@ -417,6 +439,10 @@ begin
             or score_1_1_collision = '1' then
             vga_color <= "000001001000";
         end if;
+        
+        if divider_collision = '1' then
+            vga_color <= "111111111111";
+        end if;
     end if;
 end process gen_pixel; 
 
@@ -528,7 +554,8 @@ COLLISION_DETECTOR_ENT: collision_detector port map (
     score_0_0_collision => score_0_0_collision,
     score_0_1_collision => score_0_1_collision,
     score_1_0_collision => score_1_0_collision,
-    score_1_1_collision => score_1_1_collision );
+    score_1_1_collision => score_1_1_collision,
+    divider_collision => divider_collision );
 
 
 end Behavioral;
