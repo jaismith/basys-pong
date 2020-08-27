@@ -22,52 +22,56 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+
+-- ENTITY DECLARATION
+
 entity collision_detector is
-    Port ( clk      : in std_logic;
+    Port ( clk              : in std_logic;
     
            -- coordinates to be checked
-           check_x  : in std_logic_vector(9 downto 0);
-           check_y  : in std_logic_vector(8 downto 0);
-           check_w  : in std_logic_vector(1 downto 0);
-           check_h  : in std_logic_vector(3 downto 0);
+           check_x          : in std_logic_vector(9 downto 0);
+           check_y          : in std_logic_vector(8 downto 0);
+           check_w          : in std_logic_vector(1 downto 0);
+           check_h          : in std_logic_vector(3 downto 0);
            
            -- paddles
-           p_width : in std_logic_vector(1 downto 0);
-           p_height: in std_logic_vector(3 downto 0);
-           p1_x     : in std_logic_vector(9 downto 0);
-           p1_y     : in std_logic_vector(8 downto 0);
-           p2_x     : in std_logic_vector(9 downto 0);
-           p2_y     : in std_logic_vector(8 downto 0);
+           p_width          : in std_logic_vector(1 downto 0);
+           p_height         : in std_logic_vector(3 downto 0);
+           p1_x             : in std_logic_vector(9 downto 0);
+           p1_y             : in std_logic_vector(8 downto 0);
+           p2_x             : in std_logic_vector(9 downto 0);
+           p2_y             : in std_logic_vector(8 downto 0);
            
            -- ball
-           b_diam   : in std_logic_vector(1 downto 0);
-           b_x      : in std_logic_vector(9 downto 0);
-           b_y      : in std_logic_vector(8 downto 0);
+           b_diam           : in std_logic_vector(1 downto 0);
+           b_x              : in std_logic_vector(9 downto 0);
+           b_y              : in std_logic_vector(8 downto 0);
            
            -- collisions
            p1_collision     : out std_logic;
            p2_collision     : out std_logic;
            ball_collision   : out std_logic;
            top_collision    : out std_logic;
-           bottom_collision  : out std_logic;
+           bottom_collision : out std_logic;
            right_collision  : out std_logic;
            left_collision   : out std_logic);
 end collision_detector;
 
 architecture Behavioral of collision_detector is
 
--- SIGNALS
 
 -- CONSTANTS
 
 --graphics
-constant X_ACTIVE : integer := 640;
-constant Y_ACTIVE : integer := 480;
--- outputs
+constant X_ACTIVE : unsigned(9 downto 0) := "1001111111";
+constant Y_ACTIVE : unsigned(8 downto 0) := "111011111";
+
+
+begin
+
 
 -- PROCESSES
 
-begin
 check_col: process(clk)
 begin 
     if rising_edge(clk) then
@@ -88,21 +92,20 @@ begin
         if check_y = "000000000" then
             top_collision <= '1';
         end if;
-        if unsigned(check_x) = X_ACTIVE - 1 then
+        if unsigned(check_x) = X_ACTIVE then
             right_collision <= '1';
         end if;
-        if unsigned(check_y) = Y_ACTIVE - 1 then
+        if unsigned(check_y) = Y_ACTIVE then
             bottom_collision <= '1';
         end if;
         
         -- for width and height included
-        if unsigned(check_x) + unsigned(check_w) - 1 = X_ACTIVE - 1 then
+        if unsigned(check_x) + unsigned(check_w) - 1 = X_ACTIVE then
             right_collision <= '1';
         end if;
-        if unsigned(check_y) + unsigned(check_h) - 1 = Y_ACTIVE - 1 then
+        if unsigned(check_y) + unsigned(check_h) - 1 = Y_ACTIVE then
             bottom_collision <= '1';
         end if;
-
 
         -- OBJECT COLLISIONS
         

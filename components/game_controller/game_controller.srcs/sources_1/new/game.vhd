@@ -126,6 +126,7 @@ end component;
 type step_statetype is (waiting, enabled, done);
 type check_statetype is (waiting, ball_check_setup, ball_check);
 
+
 -- SIGNALS
 
 -- controller
@@ -166,7 +167,7 @@ signal top_collision : std_logic := '0';
 signal bottom_collision : std_logic := '0';
 signal right_collision : std_logic := '0';
 signal left_collision : std_logic := '0';
--- UNSIGNED 
+
 
 -- CONSTANTS
 
