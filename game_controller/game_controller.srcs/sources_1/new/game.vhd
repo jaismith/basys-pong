@@ -252,7 +252,7 @@ begin
             check_next <= ball_check;
 
         when ball_check =>
-           
+            -- set vals
             -- paddle bounce
             if paddle_0_collision = '1'
                 or paddle_1_collision = '1' then
@@ -284,6 +284,9 @@ begin
             else
                 scored_1 <= '0';
             end if;
+            
+            -- transition
+            check_next <= waiting;
     end case;
 end process check_comb;
 
