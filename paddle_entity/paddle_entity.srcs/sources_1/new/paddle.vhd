@@ -40,7 +40,7 @@ signal u_y : unsigned(8 downto 0) := (others => '0');
 
 begin
 
-step_proc: process(clk)
+step_proc: process(clk,v)
 begin
     u_v <= unsigned(v);
     

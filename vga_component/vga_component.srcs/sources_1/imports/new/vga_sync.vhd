@@ -97,7 +97,7 @@ begin
 end process h_counter;
 
 --vertical counter
-v_counter: process(clk, h_CE, uv_count)
+v_counter: process(clk, h_CE, uv_count, hblank, vblank)
 begin
      --counter functionality
      if rising_edge(clk) then

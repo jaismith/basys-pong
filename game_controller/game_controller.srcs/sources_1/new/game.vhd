@@ -195,7 +195,7 @@ constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 
 begin
 
-score_logic: process(mclk)
+score_logic: process(mclk, uscore_p_0, uscore_p_1)
 begin
     if rising_edge(mclk) then
         if scored_0 = '1' then
@@ -211,10 +211,11 @@ begin
     -- map variables
     score_p_0 <= std_logic_vector(uscore_p_0);
     score_p_1 <= std_logic_vector(uscore_p_1);
+    
 end process score_logic;
 
 -- bounce check combinational logic
-check_comb: process(check_curr)
+check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_v_x, ball_x, ball_v_y, ball_y, top_collision, bottom_collision, right_collision, left_collision)
 begin
     if step_curr = waiting then
         check_next <= waiting;
@@ -291,7 +292,7 @@ begin
 end process check_comb;
 
 -- step combinational logic
-step_comb: process(vga_y, step_curr)
+step_comb: process(vga_y, step_curr,running)
 begin
     step_next <= step_curr;
     
