@@ -95,31 +95,31 @@ begin
         -- OBJECT COLLISIONS
         
         -- ball
-        if unsigned(b_x) + unsigned(b_diam) < unsigned(check_x)
+        if unsigned(b_x) + unsigned(b_diam) - 1 < unsigned(check_x)
             or unsigned(b_x) > unsigned(check_x) + unsigned(check_w) - 1 then
             ball_collision <= '0';
         end if;
-        if unsigned(b_y) + unsigned(b_diam) < unsigned(check_y)
+        if unsigned(b_y) + unsigned(b_diam) - 1 < unsigned(check_y)
             or unsigned(b_y) > unsigned(check_y) + unsigned(check_h) - 1 then
             ball_collision <= '0';
         end if;
         
         -- paddle 1
-        if unsigned(p1_x) + unsigned(p_width) < unsigned(check_x)
+        if unsigned(p1_x) + unsigned(p_width) - 1 < unsigned(check_x)
             or unsigned(p1_x) > unsigned(check_x) + unsigned(check_w) - 1 then
             p1_collision <= '0';
         end if;
-        if unsigned(p1_y) + unsigned(p_height) < unsigned(check_y)
+        if unsigned(p1_y) + unsigned(p_height) - 1 < unsigned(check_y)
             or unsigned(p1_y) > unsigned(check_y) + unsigned(check_h) - 1 then
             p1_collision <= '0';
         end if;
         
         -- paddle 2
-        if unsigned(p2_x) + unsigned(p_width) < unsigned(check_x)
+        if unsigned(p2_x) + unsigned(p_width) - 1 < unsigned(check_x)
             or unsigned(p2_x) > unsigned(check_x) + unsigned(check_w) - 1 then
             p2_collision <= '0';
         end if;
-        if unsigned(p2_y) + unsigned(p_height) < unsigned(check_y)
+        if unsigned(p2_y) + unsigned(p_height) - 1 < unsigned(check_y)
             or unsigned(p2_y) > unsigned(check_y) + unsigned(check_h) - 1 then
             p2_collision <= '0';
         end if;
