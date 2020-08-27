@@ -6,7 +6,7 @@
 -- Design Name: 
 -- Module Name: vga_controller - Behavioral
 -- Project Name: 
--- Target Devices: 
+-- Target Devices:  
 -- Tool Versions: 
 -- Description: 
 -- 

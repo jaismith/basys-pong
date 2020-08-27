@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="38" Path="C:/Users/BLADE-YUNIVE/Documents/~20X/ENGS 031/basys-pong/components/game_controller/game_controller.xpr">
+<Project Version="7" Minor="38" Path="C:/Users/jksmi/Documents/Code/basys-pong/components/game_controller/game_controller.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="c57bac2754244b8082a29c78b421b66b"/>

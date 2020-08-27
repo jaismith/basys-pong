@@ -195,8 +195,8 @@ begin
             -- set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
-            check_w <= "10";
-            check_h <= "1000";
+            check_w <= "01";
+            check_h <= "0001";
             
             -- transition
             if step_curr = done then
@@ -208,7 +208,8 @@ begin
             check_x <= ball_x;
             check_y <= ball_y;
             check_w <= BALL_DIAM;
-            check_h <= BALL_DIAM & "00";
+            check_h <= "00" & BALL_DIAM;
+            
             -- transition
             check_next <= ball_check;
             

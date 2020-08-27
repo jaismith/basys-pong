@@ -95,13 +95,14 @@ begin
             bottom_collision <= '1';
         end if;
         
-          -- for width and height included
-          if unsigned(check_x) + unsigned(check_w) = X_ACTIVE - 1 then
-              right_collision <= '1';
-          end if;
-          if unsigned(check_y) + unsigned(check_h) = Y_ACTIVE - 1 then
-              bottom_collision <= '1';
-          end if;
+        -- for width and height included
+        if unsigned(check_x) + unsigned(check_w) = X_ACTIVE - 1 then
+            right_collision <= '1';
+        end if;
+        
+        if unsigned(check_y) + unsigned(check_h) = Y_ACTIVE - 1 then
+            bottom_collision <= '1';
+        end if;
               
               
         -- OBJECT COLLISIONS
