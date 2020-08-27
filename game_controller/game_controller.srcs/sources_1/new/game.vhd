@@ -201,7 +201,7 @@ begin
         if scored_0 = '1' then
             uscore_p_0 <=  uscore_p_0 + 1 ;
         elsif scored_1 = '1' then
-            uscore_p_0 <=  uscore_p_0 + 1 ;
+            uscore_p_1 <=  uscore_p_1 + 1 ;
         end if;    
         if reset = '1' then
             uscore_p_0 <= "0000";
