@@ -158,6 +158,7 @@ signal check_x : std_logic_vector(9 downto 0) := (others => '0');
 signal check_y : std_logic_vector(8 downto 0) := (others => '0');
 signal check_w : std_logic_vector(1 downto 0) := (others => '0');
 signal check_h : std_logic_vector(3 downto 0) := (others => '0');
+
 signal paddle_0_collision : std_logic := '0';
 signal paddle_1_collision : std_logic := '0';
 signal ball_collision : std_logic := '0';
@@ -165,7 +166,7 @@ signal top_collision : std_logic := '0';
 signal bottom_collision : std_logic := '0';
 signal right_collision : std_logic := '0';
 signal left_collision : std_logic := '0';
-
+-- UNSIGNED 
 
 -- CONSTANTS
 
@@ -195,8 +196,8 @@ begin
             -- set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
-            check_w <= "10";
-            check_h <= "1000";
+            check_w <= "01";
+            check_h <= "0001";
             
             -- transition
             if step_curr = done then
@@ -205,10 +206,10 @@ begin
             
         when ball_check_setup =>
             -- set vals (start with ball)
-            check_x <= ball_x;
-            check_y <= ball_y;
+            check_x <= unsigned(ball_x) + unsigned(ball_v_x));
+            check_y <= unsigned(ball_y) + unsigned(ball_v_y);
             check_w <= BALL_DIAM;
-            check_h <= BALL_DIAM & "00";
+            check_h <= "00" & BALL_DIAM;
             -- transition
             check_next <= ball_check;
             
