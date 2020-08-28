@@ -224,14 +224,14 @@ constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
 constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
 constant SCORE_0_0_X : std_logic_vector(9 downto 0) := "0100000000";
 constant SCORE_0_1_X : std_logic_vector(9 downto 0) := "0100001000";
-constant SCORE_1_0_X : std_logic_vector(9 downto 0) := "0110000000";
-constant SCORE_1_1_X : std_logic_vector(9 downto 0) := "0110001000";
+constant SCORE_1_0_X : std_logic_vector(9 downto 0) := "0101111000";
+constant SCORE_1_1_X : std_logic_vector(9 downto 0) := "0110000000";
 constant SCORE_Y : std_logic_vector(8 downto 0) := "000001111";
 
 
 begin
 
-score_logic: process(mclk)
+score_logic: process(mclk, uscore_p_0, uscore_p_1)
 begin
     if rising_edge(mclk) then
         if scored_0 = '1' then
@@ -306,14 +306,10 @@ begin
 
         when ball_check =>
             -- set vals
-            -- paddle left bounce
-            if paddle_0_collision = '1' then
-                ball_v_x <= '1';
-            end if;
-            
-            -- paddle right bounce
-            if paddle_1_collision = '1' then
-                ball_v_x <= '0';
+            -- paddles bounce
+            if paddle_0_collision = '1'
+                or paddle_1_collision = '1' then
+                ball_v_x <= not(ball_v_x);
             end if;
 
             -- top wall bounce
