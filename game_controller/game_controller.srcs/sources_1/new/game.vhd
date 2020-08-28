@@ -80,6 +80,7 @@ component ball is
             v_x             : in std_logic;
             v_y             : in std_logic;
             v_x_mult        : in std_logic_vector(1 downto 0);
+            offset          : in std_logic_vector(1 downto 0);
             x               : out std_logic_vector(9 downto 0);
             y               : out std_logic_vector(8 downto 0) );
 end component;
@@ -170,6 +171,7 @@ signal ball_y : std_logic_vector(8 downto 0) := (others => '0');
 signal ball_v_x : std_logic := '1';
 signal ball_v_y : std_logic := '1';
 signal ball_v_x_mult : std_logic_vector(1 downto 0);
+signal ball_offset : std_logic_vector(1 downto 0);
 signal paddle_0_y : std_logic_vector(8 downto 0) := (others => '0');
 signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 
@@ -254,13 +256,14 @@ begin
 ball_speed: process(mclk, uscore_p_0, uscore_p_1)
 begin
     if rising_edge(mclk) then
-        ball_v_x_mult <= "00";
+        ball_v_x_mult <= "01";
+        ball_offset <= std_logic_vector(to_unsigned(score_sum mod 4, 2));
         score_sum <= to_integer(uscore_p_0) + to_integer(uscore_p_1);
         
-        if score_sum > 12 then
-            ball_v_x_mult <= "10";
+        if score_sum > 13 then
+            ball_v_x_mult <= "11";
         elsif score_sum > 6 then
-            ball_v_x_mult <= "01";
+            ball_v_x_mult <= "10";
         end if;
     end if;
 end process;
@@ -607,6 +610,7 @@ BALL_ENT: ball port map (
     v_x => ball_v_x,
     v_y => ball_v_y,
     v_x_mult => ball_v_x_mult,
+    offset => ball_offset,
     x => ball_x,
     y => ball_y );
     

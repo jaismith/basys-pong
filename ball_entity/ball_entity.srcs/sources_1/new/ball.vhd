@@ -32,6 +32,7 @@ entity ball is
            v_x      : in std_logic;
            v_y      : in std_logic;
            v_x_mult : in std_logic_vector(1 downto 0);
+           offset   : in std_logic_vector(1 downto 0);
            x        : out std_logic_vector(9 downto 0);
            y        : out std_logic_vector(8 downto 0));
 end ball;
@@ -50,7 +51,13 @@ begin
         if reset = '1' then
             -- home
             u_x <= unsigned(home_x);
-            u_y <= unsigned(home_y);
+            
+            case offset is
+                when "00" => u_y <= unsigned(home_y) - 6;
+                when "01" => u_y <= unsigned(home_y) - 3;
+                when "10" => u_y <= unsigned(home_y) + 3;
+                when "11" => u_y <= unsigned(home_y) + 6;
+            end case;
         elsif en = '1' then
             -- update x
             if v_x = '1' then
