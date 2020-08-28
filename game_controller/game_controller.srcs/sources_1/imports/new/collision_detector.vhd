@@ -110,7 +110,7 @@ begin
         
         -- BORDER COLLISIONS
   
-        if unsigned(check_y) <= 1 then
+        if unsigned(check_y) = 0 then
             top_collision <= '1';
         end if;
         if unsigned(check_y) + unsigned(check_h) >= 479 then
@@ -119,7 +119,7 @@ begin
         if unsigned(check_x) + unsigned(check_w) >= 639 then
             right_collision <= '1';
         end if;
-        if unsigned(check_x) <= 0 then
+        if unsigned(check_x) = 0 or unsigned(check_x) > 1000 then
             left_collision <= '1';
         end if;
 

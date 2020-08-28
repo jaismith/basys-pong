@@ -79,6 +79,7 @@ component ball is
             home_y          : in std_logic_vector(8 downto 0);
             v_x             : in std_logic;
             v_y             : in std_logic;
+            v_x_mult        : in std_logic_vector(1 downto 0);
             x               : out std_logic_vector(9 downto 0);
             y               : out std_logic_vector(8 downto 0) );
 end component;
@@ -168,6 +169,7 @@ signal ball_x : std_logic_vector(9 downto 0) := (others => '0');
 signal ball_y : std_logic_vector(8 downto 0) := (others => '0');
 signal ball_v_x : std_logic := '1';
 signal ball_v_y : std_logic := '1';
+signal ball_v_x_mult : std_logic_vector(1 downto 0);
 signal paddle_0_y : std_logic_vector(8 downto 0) := (others => '0');
 signal paddle_1_y : std_logic_vector(8 downto 0) := (others => '0');
 
@@ -226,6 +228,7 @@ signal score_1_0_bitmap : std_logic_vector(24 downto 0) := (others => '0');
 signal score_1_1_char : std_logic_vector(5 downto 0) := (others => '0');
 signal score_1_1_bitmap : std_logic_vector(24 downto 0) := (others => '0');
 signal score_reset : std_logic := '0';
+signal score_sum : integer := 0;
 
 
 -- CONSTANTS
@@ -248,18 +251,28 @@ constant SCORE_Y : std_logic_vector(8 downto 0) := "000001111";
 
 begin
 
+ball_speed: process(mclk, uscore_p_0, uscore_p_1)
+begin
+    if rising_edge(mclk) then
+        ball_v_x_mult <= "00";
+        score_sum <= to_integer(uscore_p_0) + to_integer(uscore_p_1);
+        
+        if score_sum > 12 then
+            ball_v_x_mult <= "10";
+        elsif score_sum > 6 then
+            ball_v_x_mult <= "01";
+        end if;
+    end if;
+end process;
+
 score_logic: process(mclk, uscore_p_0, scored_0, scored_1, uscore_p_1, main_curr)
 begin
     if rising_edge(mclk) then
-        if main_curr = playing then
-            if scored_0 = '1' and main_curr = playing then
+        if main_curr = playing or main_curr = scored then
+            if scored_0 = '1' then
                 uscore_p_0 <=  uscore_p_0 + 1 ;
-            elsif scored_1 = '1' and main_curr = playing then
+            elsif scored_1 = '1' then
                 uscore_p_1 <=  uscore_p_1 + 1 ;
-            end if;    
-            if score_reset = '1' then
-                uscore_p_0 <= "0000";
-                uscore_p_1 <= "0000";
             end if;
             
             -- set chars
@@ -277,6 +290,11 @@ begin
                 score_1_0_char <= "000000";
                 score_1_1_char <= "00" & std_logic_vector(uscore_p_1);
             end if;
+        end if;
+        
+        if score_reset = '1' then
+            uscore_p_0 <= "0000";
+            uscore_p_1 <= "0000";
         end if;
     end if;
     
@@ -367,9 +385,9 @@ begin
         elsif check_ball = '1' then
             -- set vals (start with ball)
             if ball_v_x = '1' then
-                check_x <= std_logic_vector(unsigned(ball_x) + 1);
+                check_x <= std_logic_vector(unsigned(ball_x) + 1 + unsigned(ball_v_x_mult));
             else
-                check_x <= std_logic_vector(unsigned(ball_x) - 1);
+                check_x <= std_logic_vector(unsigned(ball_x) - 1 - unsigned(ball_v_x_mult));
             end if;
             if ball_v_y = '1' then
                 check_y <= std_logic_vector(unsigned(ball_y) + 1);
@@ -588,6 +606,7 @@ BALL_ENT: ball port map (
     home_y => BALL_HOME_Y,
     v_x => ball_v_x,
     v_y => ball_v_y,
+    v_x_mult => ball_v_x_mult,
     x => ball_x,
     y => ball_y );
     
