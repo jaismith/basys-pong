@@ -31,19 +31,19 @@ entity collision_detector is
            -- coordinates to be checked
            check_x          : in std_logic_vector(9 downto 0);
            check_y          : in std_logic_vector(8 downto 0);
-           check_w          : in std_logic_vector(1 downto 0);
+           check_w          : in std_logic_vector(3 downto 0);
            check_h          : in std_logic_vector(3 downto 0);
            
            -- paddles
-           p_width          : in std_logic_vector(1 downto 0);
-           p_height         : in std_logic_vector(3 downto 0);
+           p_width          : in std_logic_vector(3 downto 0);
+           p_height         : in std_logic_vector(5 downto 0);
            p1_x             : in std_logic_vector(9 downto 0);
            p1_y             : in std_logic_vector(8 downto 0);
            p2_x             : in std_logic_vector(9 downto 0);
            p2_y             : in std_logic_vector(8 downto 0);
            
            -- ball
-           b_diam           : in std_logic_vector(1 downto 0);
+           b_diam           : in std_logic_vector(3 downto 0);
            b_x              : in std_logic_vector(9 downto 0);
            b_y              : in std_logic_vector(8 downto 0);
            
@@ -172,19 +172,19 @@ begin
         -- greeting 
         if unsigned(check_x) >= 219 and unsigned(check_x) <= 419 then
             if unsigned(check_y) >= 171 and unsigned(check_y) <= 332 then
-                greeting_collision <= greeting(to_integer((unsigned(check_x) - 219) + ((unsigned(check_y) - 171) * 200)));
+                greeting_collision <= greeting(23199 - to_integer((unsigned(check_x) - 219) + ((unsigned(check_y) - 171) * 200)));
             end if;
         end if;
         
         --game over 
          if unsigned(check_x) >= 219 and unsigned(check_x) <= 419 then
            if unsigned(check_y) >= 173 and unsigned(check_y) <= 286 then
-               game_over_collision <= game_over(to_integer((unsigned(check_x) - 219) + ((unsigned(check_y) - 173) * 200)));
+               game_over_collision <= game_over(22599 - to_integer((unsigned(check_x) - 219) + ((unsigned(check_y) - 173) * 200)));
            end if;
        end if;
        
         -- divider line
-        if unsigned(check_x) >= 317 and unsigned(check_x) <= 321 and unsigned(check_y) mod 10 < 5 then
+        if unsigned(check_x) >= 318 and unsigned(check_x) <= 320 and unsigned(check_y) mod 15 < 5 then
             divider_collision <= '1';
         end if;
     end if;

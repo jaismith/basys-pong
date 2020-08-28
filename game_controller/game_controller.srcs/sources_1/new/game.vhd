@@ -105,15 +105,15 @@ component collision_detector is
     Port (  clk             : in std_logic;
             check_x         : in std_logic_vector(9 downto 0);
             check_y         : in std_logic_vector(8 downto 0);
-            check_w         : in std_logic_vector(1 downto 0);
+            check_w         : in std_logic_vector(3 downto 0);
             check_h         : in std_logic_vector(3 downto 0);
-            p_width         : in std_logic_vector(1 downto 0);
-            p_height        : in std_logic_vector(3 downto 0);
+            p_width         : in std_logic_vector(3 downto 0);
+            p_height        : in std_logic_vector(5 downto 0);
             p1_x            : in std_logic_vector(9 downto 0);
             p1_y            : in std_logic_vector(8 downto 0);
             p2_x            : in std_logic_vector(9 downto 0);
             p2_y            : in std_logic_vector(8 downto 0);
-            b_diam          : in std_logic_vector(1 downto 0);
+            b_diam          : in std_logic_vector(3 downto 0);
             b_x             : in std_logic_vector(9 downto 0);
             b_y             : in std_logic_vector(8 downto 0);
             score_0_0_x : in std_logic_vector(9 downto 0);
@@ -136,7 +136,9 @@ component collision_detector is
             score_0_1_collision : out std_logic;
             score_1_0_collision : out std_logic;
             score_1_1_collision : out std_logic;
-            divider_collision : out std_logic );
+            divider_collision : out std_logic;
+            greeting_collision: out std_logic;
+            game_over_collision: out std_logic );
 end component;
 
 component letter is
@@ -176,6 +178,9 @@ signal step_curr, step_next : step_statetype := waiting;
 signal check : std_logic := '0';
 signal check_curr, check_next : check_statetype := waiting;
 
+--check datapath
+signal check_vga, check_ball, bounce: std_logic := '0';
+
 -- main fsm
 signal main_curr, main_next : main_statetype := waiting;
 signal greeting_EN, game_over_EN: std_logic := '0';
@@ -188,7 +193,7 @@ signal vga_color : std_logic_vector(11 downto 0) := (others => '0');
 -- collision detection signals
 signal check_x : std_logic_vector(9 downto 0) := (others => '0');
 signal check_y : std_logic_vector(8 downto 0) := (others => '0');
-signal check_w : std_logic_vector(1 downto 0) := (others => '0');
+signal check_w : std_logic_vector(3 downto 0) := (others => '0');
 signal check_h : std_logic_vector(3 downto 0) := (others => '0');
 
 signal paddle_0_collision : std_logic := '0';
@@ -203,6 +208,8 @@ signal score_0_1_collision : std_logic := '0';
 signal score_1_0_collision : std_logic := '0';
 signal score_1_1_collision : std_logic := '0';
 signal divider_collision : std_logic := '0';
+signal game_over_collision : std_logic := '0';
+signal greeting_collision : std_logic := '0';
 
 --score logic signals
 signal scored_0 : std_logic := '0';
@@ -223,11 +230,11 @@ signal score_reset : std_logic := '0';
 -- CONSTANTS
 
 -- graphics
-constant BALL_DIAM : std_logic_vector(1 downto 0) := "11";
+constant BALL_DIAM : std_logic_vector(3 downto 0) := "0011";
 constant BALL_HOME_X : std_logic_vector(9 downto 0) := "0101000000";
 constant BALL_HOME_Y : std_logic_vector(8 downto 0) := "011110000";
-constant PADDLE_HEIGHT : std_logic_vector(3 downto 0) := "1111";
-constant PADDLE_WIDTH : std_logic_vector(1 downto 0) := "11";
+constant PADDLE_HEIGHT : std_logic_vector(5 downto 0) := "001111";
+constant PADDLE_WIDTH : std_logic_vector(3 downto 0) := "0011";
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
 constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
 constant PADDLE_1_X : std_logic_vector(9 downto 0) := "1000110000"; -- 560
@@ -278,10 +285,9 @@ begin
 end process score_logic;
 
 -- main game fsm combinational
-main_game_comb: process(main_curr, check_curr, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1)
+main_game_comb: process(main_curr, check_curr, mreset, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1)
 begin
     main_next <= main_curr;
-    
     case main_curr is
         when waiting => 
             -- enable greeting
@@ -291,7 +297,7 @@ begin
             score_reset <= '1';
             
             --transition
-            if start = '0' and running <= '1' then
+            if start = '1' and running <= '1' then
                main_next <= playing;
             end if;
 
@@ -339,30 +345,24 @@ begin
                 reset <= '1';
                 main_next <= waiting;
             end if;
+         when others =>
+            main_next <= main_curr;
      end case;
 end process main_game_comb;
 
--- bounce check combinational logic
-check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_x, ball_y, ball_v_x, ball_v_y, paddle_0_collision, paddle_1_collision, top_collision, bottom_collision, right_collision, left_collision)
+check_datapath: process(mclk, check_x, check_y, check_w, check_h)
 begin
-    check_next <= check_curr;
-
-    case check_curr is
-        when waiting =>
-            -- set vals
+    if rising_edge(mclk)then
+        if check_vga = '1' then
+            --set vals
             check_x <= vga_x;
             check_y <= vga_y(8 downto 0);
-            check_w <= "01";
+            check_w <= "0001";
             check_h <= "0001";
             scored_0 <= '0';
             scored_1 <= '0';
             
-            -- transition
-            if step_curr = done then
-                check_next <= ball_check_setup;
-            end if;
-            
-        when ball_check_setup =>
+        elsif check_ball = '1' then
             -- set vals (start with ball)
             if ball_v_x = '1' then
                 check_x <= std_logic_vector(unsigned(ball_x) + 1);
@@ -374,22 +374,18 @@ begin
             else
                 check_y <= std_logic_vector(unsigned(ball_y) - 1);
             end if;
+            
             check_w <= BALL_DIAM;
-            check_h <= "00" & BALL_DIAM;
-
-            -- transition
-            if check_w = BALL_DIAM then
-                check_next <= ball_check;
-            end if;
-
-        when ball_check =>
-            -- set vals
+            check_h <= BALL_DIAM;
+            
+        elsif bounce = '1' then
+    
             -- paddles bounce
             if paddle_0_collision = '1'
                 or paddle_1_collision = '1' then
                 ball_v_x <= not(ball_v_x);
             end if;
-
+    
             -- top wall bounce
             if top_collision = '1' then
                 ball_v_y <= '1';
@@ -415,14 +411,48 @@ begin
             else
                 scored_1 <= '0';
             end if;
+        else
+            scored_0 <= '0';
+            scored_1 <= '0';      
+        end if;
+    end if;
+end process check_datapath;
+
+-- bounce check combinational logic
+check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_x, ball_y, ball_v_x, ball_v_y, paddle_0_collision, paddle_1_collision, top_collision, bottom_collision, right_collision, left_collision, check_w)
+begin
+    check_next <= check_curr;
+
+    case check_curr is
+        when waiting =>
+            check_vga <= '1'; 
+            check_ball <= '0';
+            bounce <= '1';
+            -- transition
+            if step_curr = done then
+                check_next <= ball_check_setup;
+            end if;
             
+        when ball_check_setup =>
+            check_vga <= '0'; 
+            check_ball <= '1';
+            bounce <= '0';
+            -- transition
+            if check_w = BALL_DIAM then
+                check_next <= ball_check;
+            end if;
+
+        when ball_check =>
+            check_vga <= '0'; 
+            check_ball <= '0';
+            bounce <= '1';
             -- transition
             check_next <= done;
             
         when done =>
-            -- set vals
-            scored_0 <= '0';
-            scored_1 <= '0';
+            check_vga <= '0'; 
+            check_ball <= '0';
+            bounce <= '0';
             
             -- transition
             if step_curr = waiting then
@@ -512,6 +542,18 @@ begin
                 
             -- dividers
             if divider_collision = '1' then
+                vga_color <= "111111111111";
+            end if;
+        end if;
+        
+        if greeting_EN <= '1' then
+            if greeting_collision = '1' then
+                vga_color <= "111111111111";
+            end if;
+        end if;
+        
+        if game_over_EN <= '1' then
+            if game_over_collision = '1' then
                 vga_color <= "111111111111";
             end if;
         end if;
@@ -627,7 +669,9 @@ COLLISION_DETECTOR_ENT: collision_detector port map (
     score_0_1_collision => score_0_1_collision,
     score_1_0_collision => score_1_0_collision,
     score_1_1_collision => score_1_1_collision,
-    divider_collision => divider_collision );
+    divider_collision => divider_collision,
+    game_over_collision => game_over_collision,
+    greeting_collision => greeting_collision);
 
 
 end Behavioral;
