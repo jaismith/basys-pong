@@ -96,6 +96,7 @@ begin
         score_0_1_collision <= '0';
         score_1_0_collision <= '0';
         score_1_1_collision <= '0';
+        divider_collision <= '0';
 
         -- BORDER COLLISIONS
   
@@ -166,7 +167,7 @@ begin
                 score_1_1_collision <= score_1_1_bitmap(24 - to_integer(unsigned(check_x) - unsigned(score_1_1_x) + ((unsigned(check_y) - unsigned(score_y)) * 5)));
             end if;
         end if;
-        
+         
         -- divider line
         if unsigned(check_x) = 320 and unsigned(check_y) mod 10 < 5 then
             divider_collision <= '1';
