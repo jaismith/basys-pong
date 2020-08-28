@@ -28,6 +28,7 @@ entity paddle is
            en       : in std_logic;
            reset    : in std_logic;
            home     : in std_logic_vector (8 downto 0);
+           height   : in std_logic_vector (5 downto 0);
            v        : in std_logic_vector(3 downto 0);
            y        : out std_logic_vector (8 downto 0));
 end paddle;
@@ -51,9 +52,15 @@ begin
         elsif en = '1' then
             -- update y
             if u_v < 4 then
-                u_y <= u_y + (4 - u_v);
+                if u_y + (4 - u_v) + unsigned(height) <= 479 then
+                    u_y <= u_y + (4 - u_v);
+                end if;
             elsif u_v > 4 then
-                u_y <= u_y - (u_v - 4);
+                if u_y - (4 - u_v) < 0 then
+                    --do nothing!
+                else
+                    u_y <= u_y - (u_v - 4);
+                end if;
             end if;
         end if;
     end if;

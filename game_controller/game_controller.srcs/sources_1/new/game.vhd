@@ -88,6 +88,7 @@ component paddle is
             en              : in std_logic;
             reset           : in std_logic;
             home            : in std_logic_vector(8 downto 0);
+            height          : in std_logic_vector(5 downto 0);
             v               : in std_logic_vector(3 downto 0);
             y               : out std_logic_vector(8 downto 0) );
 end component;
@@ -230,10 +231,10 @@ signal score_reset : std_logic := '0';
 -- CONSTANTS
 
 -- graphics
-constant BALL_DIAM : std_logic_vector(3 downto 0) := "0011";
+constant BALL_DIAM : std_logic_vector(3 downto 0) := "0101";
 constant BALL_HOME_X : std_logic_vector(9 downto 0) := "0101000000";
 constant BALL_HOME_Y : std_logic_vector(8 downto 0) := "011110000";
-constant PADDLE_HEIGHT : std_logic_vector(5 downto 0) := "001111";
+constant PADDLE_HEIGHT : std_logic_vector(5 downto 0) := "010011";
 constant PADDLE_WIDTH : std_logic_vector(3 downto 0) := "0011";
 constant PADDLE_HOME : std_logic_vector(8 downto 0) := "011110000"; -- 240
 constant PADDLE_0_X : std_logic_vector(9 downto 0) := "0001010000"; -- 80
@@ -285,7 +286,7 @@ begin
 end process score_logic;
 
 -- main game fsm combinational
-main_game_comb: process(main_curr, check_curr, mreset, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1)
+main_game_comb: process(main_curr, check_curr, mreset, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1, greeting_EN, game_over_EN)
 begin
     main_next <= main_curr;
     case main_curr is
@@ -511,7 +512,7 @@ begin
         vga_color <= "000000000000";
         
         if ball_collision = '1' then
-            vga_color <= "000011001100";
+            vga_color <= "111111111111";
         end if;
         
         if right_collision = '1' then
@@ -550,13 +551,17 @@ begin
             if greeting_collision = '1' then
                 vga_color <= "111111111111";
             end if;
-        end if;
-        
-        if game_over_EN <= '1' then
-            if game_over_collision = '1' then
-                vga_color <= "111111111111";
+        else
+            if greeting_collision = '1' then
+                vga_color <= "000000000000";
             end if;
         end if;
+        
+--        if game_over_EN <= '1' then
+--            if game_over_collision = '1' then
+--                vga_color <= "111111111111";
+--            end if;
+--        end if;
     end if;
 end process gen_pixel; 
 
@@ -594,6 +599,7 @@ PADDLE_0_ENT: paddle port map (
     en => step,
     reset => mreset,
     home => PADDLE_HOME,
+    height => PADDLE_HEIGHT,
     v => controller_0,
     y => paddle_0_y );
     
@@ -603,6 +609,7 @@ PADDLE_1_ENT: paddle port map (
     en => step,
     reset => mreset,
     home => PADDLE_HOME,
+    height => PADDLE_HEIGHT,
     v => controller_1,
     y => paddle_1_y );
 
