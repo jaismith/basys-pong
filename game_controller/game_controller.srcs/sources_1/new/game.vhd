@@ -29,7 +29,8 @@ use IEEE.NUMERIC_STD.ALL;
 entity game is
     Port (  mclk            : in std_logic;
             running         : in std_logic;
-            reset           : in std_logic;
+            mreset          : in std_logic;
+            start           : in std_logic;
             
             -- SPI Bus
             spi_sdata_0     : in std_logic;
@@ -43,8 +44,8 @@ entity game is
             an              : out std_logic_vector(3 downto 0);
             
             --score
-            score_p_0       : out std_logic_vector(3 downto 0); 
-            score_p_1       : out std_logic_vector(3 downto 0);  
+            score_p_0       : out std_logic_vector(3 downto 0);
+            score_p_1       : out std_logic_vector(3 downto 0);
                     
             -- vga
             rgb             : out std_logic_vector(11 downto 0);
@@ -148,9 +149,12 @@ end component;
 
 type step_statetype is (waiting, enabled, done);
 type check_statetype is (waiting, ball_check_setup, ball_check, done);
+type main_statetype is (waiting, playing, scored, game_over);
 
 
 -- SIGNALS
+
+signal reset : std_logic := '0';
 
 -- controller
 signal controller_0 : std_logic_vector(3 downto 0) := (others => '0');
@@ -171,6 +175,10 @@ signal step_curr, step_next : step_statetype := waiting;
 -- check fsm
 signal check : std_logic := '0';
 signal check_curr, check_next : check_statetype := waiting;
+
+-- main fsm
+signal main_curr, main_next : main_statetype := waiting;
+signal greeting_EN, game_over_EN: std_logic := '0';
 
 -- vga
 signal vga_x : std_logic_vector(9 downto 0) := (others => '0');
@@ -196,7 +204,6 @@ signal score_1_0_collision : std_logic := '0';
 signal score_1_1_collision : std_logic := '0';
 signal divider_collision : std_logic := '0';
 
-
 --score logic signals
 signal scored_0 : std_logic := '0';
 signal scored_1 : std_logic := '0';
@@ -210,6 +217,8 @@ signal score_1_0_char : std_logic_vector(5 downto 0) := (others => '0');
 signal score_1_0_bitmap : std_logic_vector(24 downto 0) := (others => '0');
 signal score_1_1_char : std_logic_vector(5 downto 0) := (others => '0');
 signal score_1_1_bitmap : std_logic_vector(24 downto 0) := (others => '0');
+signal score_reset : std_logic := '0';
+
 
 -- CONSTANTS
 
@@ -231,33 +240,35 @@ constant SCORE_Y : std_logic_vector(8 downto 0) := "000001111";
 
 begin
 
-score_logic: process(mclk, uscore_p_0, uscore_p_1)
+score_logic: process(mclk, uscore_p_0, scored_0, scored_1, uscore_p_1, main_curr)
 begin
     if rising_edge(mclk) then
-        if scored_0 = '1' then
-            uscore_p_0 <=  uscore_p_0 + 1 ;
-        elsif scored_1 = '1' then
-            uscore_p_1 <=  uscore_p_1 + 1 ;
-        end if;    
-        if reset = '1' then
-            uscore_p_0 <= "0000";
-            uscore_p_1 <= "0000";
-        end if;
-        
-        -- set chars
-        if uscore_p_0 > 9 then
-            score_0_0_char <= "000001";
-            score_0_1_char <= "00" & std_logic_vector(uscore_p_0 - 10);
-        else
-            score_0_0_char <= "000000";
-            score_0_1_char <= "00" & std_logic_vector(uscore_p_0);
-        end if;
-        if uscore_p_1 > 9 then
-            score_1_0_char <= "000001";
-            score_1_1_char <= "00" & std_logic_vector(uscore_p_1 - 10);
-        else
-            score_1_0_char <= "000000";
-            score_1_1_char <= "00" & std_logic_vector(uscore_p_1);
+        if main_curr = playing then
+            if scored_0 = '1' and main_curr = playing then
+                uscore_p_0 <=  uscore_p_0 + 1 ;
+            elsif scored_1 = '1' and main_curr = playing then
+                uscore_p_1 <=  uscore_p_1 + 1 ;
+            end if;    
+            if score_reset = '1' then
+                uscore_p_0 <= "0000";
+                uscore_p_1 <= "0000";
+            end if;
+            
+            -- set chars
+            if uscore_p_0 > 9 then
+                score_0_0_char <= "000001";
+                score_0_1_char <= "00" & std_logic_vector(uscore_p_0 - 10);
+            else
+                score_0_0_char <= "000000";
+                score_0_1_char <= "00" & std_logic_vector(uscore_p_0);
+            end if;
+            if uscore_p_1 > 9 then
+                score_1_0_char <= "000001";
+                score_1_1_char <= "00" & std_logic_vector(uscore_p_1 - 10);
+            else
+                score_1_0_char <= "000000";
+                score_1_1_char <= "00" & std_logic_vector(uscore_p_1);
+            end if;
         end if;
     end if;
     
@@ -265,6 +276,71 @@ begin
     score_p_0 <= std_logic_vector(uscore_p_0);
     score_p_1 <= std_logic_vector(uscore_p_1);
 end process score_logic;
+
+-- main game fsm combinational
+main_game_comb: process(main_curr, check_curr, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1)
+begin
+    main_next <= main_curr;
+    
+    case main_curr is
+        when waiting => 
+            -- enable greeting
+            greeting_EN <= '1';
+            game_over_EN <= '0';
+            reset <= '0';
+            score_reset <= '1';
+            
+            --transition
+            if start = '0' and running <= '1' then
+               main_next <= playing;
+            end if;
+
+        when playing =>
+            -- disable greeting
+            greeting_EN <= '0';
+            game_over_EN <= '0';
+            reset <= '0';
+            score_reset <= '0';
+            
+            -- transition
+            if mreset = '1' then
+                main_next <= waiting;
+                reset <= '1';
+            elsif scored_0 = '1' or scored_1 = '1' then
+                main_next <= scored;
+            end if;
+        
+        when scored =>
+            -- set vals
+            greeting_EN <= '0';
+            game_over_EN <= '0';
+            reset <= '1';
+            score_reset <= '0';
+        
+            -- transition
+            if mreset = '1' then
+                reset <= '1';
+                main_next <= waiting;
+            elsif uscore_p_0 = 11 or uscore_p_1 = 11 then
+                main_next <= game_over;
+            else
+                main_next <= playing;
+            end if;
+        
+        when game_over =>
+            -- show game over
+            game_over_EN <= '1'; 
+            greeting_EN <= '0';
+            reset <= '0';
+            score_reset <= '0';
+            
+            -- transition
+            if mreset = '1' or start = '1' then
+                reset <= '1';
+                main_next <= waiting;
+            end if;
+     end case;
+end process main_game_comb;
 
 -- bounce check combinational logic
 check_comb: process(check_curr, step_curr, vga_x, vga_y, ball_x, ball_y, ball_v_x, ball_v_y, paddle_0_collision, paddle_1_collision, top_collision, bottom_collision, right_collision, left_collision)
@@ -302,7 +378,9 @@ begin
             check_h <= "00" & BALL_DIAM;
 
             -- transition
-            check_next <= ball_check;
+            if check_w = BALL_DIAM then
+                check_next <= ball_check;
+            end if;
 
         when ball_check =>
             -- set vals
@@ -392,6 +470,7 @@ begin
     if rising_edge(mclk) then
         step_curr <= step_next;
         check_curr <= check_next;
+        main_curr <= main_next;
     end if;
 end process fsm_update;
 
@@ -400,14 +479,6 @@ gen_pixel: process(mclk)
 begin
     if rising_edge(mclk) then
         vga_color <= "000000000000";
-        
-        if paddle_0_collision = '1' then
-            vga_color <= "110011001100";
-        end if;
-        
-        if paddle_1_collision = '1' then
-            vga_color <= "110011000000";
-        end if;
         
         if ball_collision = '1' then
             vga_color <= "000011001100";
@@ -428,8 +499,21 @@ begin
             vga_color <= "111111111111";
         end if;
         
-        if divider_collision = '1' then
-            vga_color <= "111111111111";
+        -- only show during games
+        if main_curr = playing or main_curr = scored then
+            -- paddles
+            if paddle_0_collision = '1' then
+                vga_color <= "110011001100";
+            end if;
+            
+            if paddle_1_collision = '1' then
+                vga_color <= "110011000000";
+            end if;
+                
+            -- dividers
+            if divider_collision = '1' then
+                vga_color <= "111111111111";
+            end if;
         end if;
     end if;
 end process gen_pixel; 
@@ -466,7 +550,7 @@ BALL_ENT: ball port map (
 PADDLE_0_ENT: paddle port map (
     clk => mclk,
     en => step,
-    reset => reset,
+    reset => mreset,
     home => PADDLE_HOME,
     v => controller_0,
     y => paddle_0_y );
@@ -475,7 +559,7 @@ PADDLE_0_ENT: paddle port map (
 PADDLE_1_ENT: paddle port map (
     clk => mclk,
     en => step,
-    reset => reset,
+    reset => mreset,
     home => PADDLE_HOME,
     v => controller_1,
     y => paddle_1_y );
