@@ -31,7 +31,7 @@ entity game is
             running         : in std_logic;
             mreset          : in std_logic;
             start           : in std_logic;
-            
+
             -- SPI Bus
             spi_sdata_0     : in std_logic;
             spi_sdata_1     : in std_logic;
@@ -289,6 +289,7 @@ end process score_logic;
 main_game_comb: process(main_curr, check_curr, mreset, start, running, scored_0, scored_1, uscore_p_0, uscore_p_1, greeting_EN, game_over_EN)
 begin
     main_next <= main_curr;
+
     case main_curr is
         when waiting => 
             -- enable greeting
@@ -429,6 +430,7 @@ begin
             check_vga <= '1'; 
             check_ball <= '0';
             bounce <= '1';
+            
             -- transition
             if step_curr = done then
                 check_next <= ball_check_setup;
@@ -438,6 +440,7 @@ begin
             check_vga <= '0'; 
             check_ball <= '1';
             bounce <= '0';
+            
             -- transition
             if check_w = BALL_DIAM then
                 check_next <= ball_check;
@@ -447,6 +450,7 @@ begin
             check_vga <= '0'; 
             check_ball <= '0';
             bounce <= '1';
+            
             -- transition
             check_next <= done;
             
@@ -506,7 +510,7 @@ begin
 end process fsm_update;
 
 -- gen pixel logic
-gen_pixel: process(mclk)
+gen_pixel: process(mclk, greeting_EN, game_over_EN)
 begin
     if rising_edge(mclk) then
         vga_color <= "000000000000";
@@ -547,21 +551,15 @@ begin
             end if;
         end if;
         
-        if greeting_EN <= '1' then
-            if greeting_collision = '1' then
-                vga_color <= "111111111111";
-            end if;
-        else
-            if greeting_collision = '1' then
-                vga_color <= "000000000000";
-            end if;
+        -- new game splash
+        if greeting_EN = '1' and greeting_collision = '1' then
+            vga_color <= "111111111111";
         end if;
         
---        if game_over_EN <= '1' then
---            if game_over_collision = '1' then
---                vga_color <= "111111111111";
---            end if;
---        end if;
+        -- game over splash
+        if game_over_EN = '1' and game_over_collision = '1' then
+            vga_color <= "111111111111";
+        end if;
     end if;
 end process gen_pixel; 
 

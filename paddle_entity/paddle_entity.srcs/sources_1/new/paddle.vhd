@@ -56,9 +56,7 @@ begin
                     u_y <= u_y + (4 - u_v);
                 end if;
             elsif u_v > 4 then
-                if u_y - (4 - u_v) < 0 then
-                    --do nothing!
-                else
+                if u_y - (u_v - 4) < 495 then
                     u_y <= u_y - (u_v - 4);
                 end if;
             end if;

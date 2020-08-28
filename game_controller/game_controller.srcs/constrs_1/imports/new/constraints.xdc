@@ -44,8 +44,8 @@ set_property PACKAGE_PIN V17 [get_ports {running}]
 
 
 ## LEDs
-#set_property PACKAGE_PIN U16 [get_ports {step_out}]
-#	set_property IOSTANDARD LVCMOS33 [get_ports {step_out}]
+#set_property PACKAGE_PIN U16 [get_ports {go_out}]
+#	set_property IOSTANDARD LVCMOS33 [get_ports {go_out}]
 #set_property PACKAGE_PIN E19 [get_ports {led[1]}]
 	#set_property IOSTANDARD LVCMOS33 [get_ports {led[1]}]
 #set_property PACKAGE_PIN U19 [get_ports {led[2]}]
