@@ -417,16 +417,8 @@ begin
             vga_color <= "000011001100";
         end if;
         
-        if top_collision = '1' then
-            vga_color <= "000011000000";
-        end if;
-        
-        if bottom_collision = '1' then
-            vga_color <= "110000001100";
-        end if;
-        
         if right_collision = '1' then
-            vga_color <= "110000000000";
+            vga_color <= "000011000000";
         end if;
         
         if left_collision = '1' then
@@ -437,7 +429,7 @@ begin
             or score_0_1_collision = '1'
             or score_1_0_collision = '1'
             or score_1_1_collision = '1' then
-            vga_color <= "000001001000";
+            vga_color <= "111111111111";
         end if;
         
         if divider_collision = '1' then
